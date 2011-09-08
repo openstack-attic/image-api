@@ -92,14 +92,14 @@
                             <sectionLabelIncludesComponentLabel>0</sectionLabelIncludesComponentLabel>
                             <postProcess>
                                 <!-- Copies the figures to the correct location for webhelp -->
+                                <!-- No figures in this book -->
                                 
-                                
-                                <!-- Copies schema to a folder and styling for the schemas so a browser can display them -->
-                                                               
+                                <mkdir dir="${basedir}/target/docbkx/webhelp/trunk"/>
+                                <!-- Copies HTML to a release folder -->                                                               
                                 <copy
                                     todir="${basedir}/target/docbkx/webhelp/trunk/openstack-image-service/developer">
                                     <fileset
-                                        dir="${basedir}/target/docbkx/webhelp/openstack-image-service-dev/os-image-service-devguide/">
+                                        dir="${basedir}/target/docbkx/webhelp/">
                                         <include name="**/*" />
                                     </fileset>
                                 </copy>
@@ -107,13 +107,10 @@
                                 <!--Moves PDFs to the needed placement -->
                                 
                                 <move failonerror="false"
-                                    file="${basedir}/target/docbkx/pdf/openstack-image-service-dev/os-image-service-devguide.pdf"
+                                    file="${basedir}/target/docbkx/pdf/os-image-service-devguide.pdf"
                                     tofile="${basedir}/target/docbkx/webhelp/trunk/openstack-image-service/developer/os-image-service-devguide-trunk.pdf"/>
                                 
-                                <!--Deletes leftover uneeded directories -->
                                 
-                                <delete
-                                    dir="${basedir}/target/docbkx/webhelp/openstack-image-service-dev"/>
                             </postProcess>
                         </configuration>
                     </execution>
@@ -123,7 +120,7 @@
                     <xincludeSupported>true</xincludeSupported>
                     <sourceDirectory>src/docbkx</sourceDirectory>
                     <includes>
-                        openstack-image-service-dev/os-image-service-devguide.xml
+                        os-image-service-devguide.xml
                     </includes>
                     <profileSecurity>reviewer</profileSecurity>
                     <branding>openstack</branding>
