@@ -22,9 +22,9 @@
             <year>2011</year>
             <holder>OpenStack LLC</holder>
         </copyright>
-        <releaseinfo>trunk</releaseinfo>
+        <releaseinfo>Diablo</releaseinfo>
         <productname>OpenStack Image Service</productname>
-        <pubdate>2011-09-08</pubdate>
+        <pubdate>2011-09-22</pubdate>
         <legalnotice role="apache2">
             <annotation>
                 <remark>Copyright details are filled in by the template.</remark>
@@ -36,9 +36,9 @@
             </annotation>
         </legalnotice>
         <abstract>
-            <para>This document is intended for software developers interested in developing applications
-                using the OpenStack™ Image Service Application Programming Interface
-                (<abbrev>API</abbrev>). </para>
+            <para>This document is intended for software developers interested in developing
+                applications using the OpenStack™ Image Service Application Programming Interface
+                    (<abbrev>API</abbrev>). </para>
         </abstract>
     </info>
     <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->

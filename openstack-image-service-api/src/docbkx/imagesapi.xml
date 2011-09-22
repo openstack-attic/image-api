@@ -36,7 +36,7 @@
     </para>
     <literallayout class="monospaced">
 {'images': [
-  {'uri': 'http://glance.example.com/images/1',
+  {'status: 'active',
    'name': 'Ubuntu 10.04 Plain',
    'disk_format': 'vhd',
    'container_format': 'ovf',
@@ -62,8 +62,7 @@ All images returned from the above `GET` request are <emphasis role="bold">publi
     </para>
     <literallayout class="monospaced">
 {'images': [
-  {'uri': 'http://glance.example.com/images/1',
-   'name': 'Ubuntu 10.04 Plain 5GB',
+  {'name': 'Ubuntu 10.04 Plain 5GB',
    'disk_format': 'vhd',
    'container_format': 'ovf',
    'size': '5368709120',
@@ -235,7 +234,6 @@ indicate the owner of the image
       <literal>HEAD</literal> request:
     </para>
     <literallayout class="monospaced">
-x-image-meta-uri              http://glance.example.com/images/1
 x-image-meta-name             Ubuntu 10.04 Plain 5GB
 x-image-meta-disk-format      vhd
 x-image-meta-container-format ovf
@@ -291,7 +289,6 @@ x-image-meta-property-distro  Ubuntu 10.04 LTS
       <literal>GET</literal> request:
     </para>
     <literallayout class="monospaced">
-x-image-meta-uri              http://glance.example.com/images/1
 x-image-meta-name             Ubuntu 10.04 Plain 5GB
 x-image-meta-disk-format      vhd
 x-image-meta-container-format ovf
