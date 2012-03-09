@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <chapter xmlns="http://docbook.org/ns/docbook"
   xmlns:xi="http://www.w3.org/2001/XInclude"
-  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" 
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
   xml:id="the-glance-rest-api"><info>
     <title>The Glance REST API</title></info>
-  
+
   <para>
     Glance has a RESTful API that exposes both metadata about registered
     virtual machine images and the image data itself.
@@ -22,7 +22,7 @@
     server.
   </para>
   <section xml:id="requesting-a-list-of-public-vm-images"><info><title>Requesting a List of Public VM Images</title></info>
-    
+
     <para>
       We want to see a list of available virtual machine images that the
       Glance server knows about.
@@ -48,7 +48,7 @@ All images returned from the above `GET` request are <emphasis role="bold">publi
 </literallayout>
   </section>
   <section xml:id="requesting-detailed-metadata-on-public-vm-images"><info><title>Requesting Detailed Metadata on Public VM Images</title></info>
-    
+
     <para>
       We want to see more detailed information on available virtual
       machine images that the Glance server knows about.
@@ -100,7 +100,7 @@ indicate the owner of the image
   </section>
   <section xml:id="filtering-images-returned-via-get-images-and-get-imagesdetail"><info><title>Filtering Images Returned via <literal>GET /images</literal>
     and <literal>GET /images/detail</literal></title></info>
-    
+
     <para>
       Both the <literal>GET /images</literal> and
       <literal>GET /images/detail</literal> requests take query
@@ -207,7 +207,7 @@ indicate the owner of the image
     </itemizedlist>
   </section>
   <section xml:id="requesting-detailed-metadata-on-a-specific-image"><info><title>Requesting Detailed Metadata on a Specific Image</title></info>
-    
+
     <para>
       We want to see detailed information for a specific virtual machine
       image that the Glance server knows about.
@@ -259,7 +259,7 @@ x-image-meta-property-distro  Ubuntu 10.04 LTS
       value is a string which may either be null or which will indicate the owner of the image </para>
   </section>
   <section xml:id="retrieving-a-virtual-machine-image"><info><title>Retrieving a Virtual Machine Image</title></info>
-    
+
     <para>
       We want to retrieve that actual raw data for a specific virtual
       machine image that the Glance server knows about.
@@ -333,13 +333,13 @@ from the request, which will have content-type of
 </literallayout>
   </section>
   <section xml:id="adding-a-new-virtual-machine-image"><info><title>Adding a New Virtual Machine Image</title></info>
-    
+
     <para>
       We have created a new virtual machine image in some way (created a
       "golden image" or snapshotted/backed up an existing
       image) and we wish to do two things:
     </para>
-    
+
       <itemizedlist>
         <listitem>
           <para>
@@ -352,7 +352,7 @@ from the request, which will have content-type of
           </para>
         </listitem>
       </itemizedlist>
-    
+
     <para>
       We can do the above two activities in a single call to the Glance
       API. Assuming, like in the examples above, that a Glance API
@@ -368,7 +368,7 @@ POST http://glance.example.com/images/
       MIME-encoded disk image data.
     </para>
     <section xml:id="adding-image-metadata-in-http-headers"><info><title>Adding Image Metadata in HTTP Headers</title></info>
-      
+
       <para>
         Glance will view as image metadata any HTTP header that it
         receives in a
@@ -574,7 +574,7 @@ x-image-meta-property-distro  Ubuntu 10.10
       </itemizedlist>
     </section>
     <section xml:id="updating-an-image"><info><title>Updating an Image</title></info>
-      
+
       <para>
         Glance will view as image metadata any HTTP header that it
         receives in a
@@ -602,7 +602,7 @@ x-image-meta-property-distro  Ubuntu 10.10
     </section>
   </section>
   <section xml:id="requesting-image-memberships"><info><title>Requesting Image Memberships</title></info>
-    
+
     <para>
       We want to see a list of the other system tenants (or users, if
       "owner_is_tenant" is False) that may access a given
@@ -631,7 +631,7 @@ x-image-meta-property-distro  Ubuntu 10.10
     </para>
   </section>
   <section xml:id="requesting-shared-images"><info><title>Requesting Shared Images</title></info>
-    
+
     <para>
       We want to see a list of images which are shared with a given
       tenant. We issue a <literal>GET</literal> request to
@@ -652,7 +652,7 @@ x-image-meta-property-distro  Ubuntu 10.10
     </para>
   </section>
   <section xml:id="adding-a-member-to-an-image"><info><title>Adding a Member to an Image</title></info>
-    
+
     <para>
       We want to authorize a tenant to access a private image. We issue
       a <literal>PUT</literal> request to
@@ -675,7 +675,7 @@ x-image-meta-property-distro  Ubuntu 10.10
     </para>
   </section>
   <section xml:id="removing-a-member-from-an-image"><info><title>Removing a Member from an Image</title></info>
-    
+
     <para>
       We want to revoke a tenant's right to access a private image. We
       issue a <literal>DELETE</literal> request to
@@ -684,7 +684,7 @@ x-image-meta-property-distro  Ubuntu 10.10
     </para>
   </section>
   <section xml:id="replacing-a-membership-list-for-an-image"><info><title>Replacing a Membership List for an Image</title></info>
-    
+
     <para>
       The full membership list for a given image may be replaced. We
       issue a <literal>PUT</literal> request to
