@@ -6,6 +6,7 @@
     xmlns:html="http://www.w3.org/1999/xhtml"
     version="5.0"
     >
+    <?rax pdf.url="../os-image-service-devguide-1.0.pdf"?>
     <title>OpenStack Image Service Developer Guide</title>
     <info>
         <author>
