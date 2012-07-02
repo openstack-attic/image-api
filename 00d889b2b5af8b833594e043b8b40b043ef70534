@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Approved+1: Lorin Hochstein <lorin@nimbisservices.com>
+Code-Review+2: Lorin Hochstein <lorin@nimbisservices.com>
+Submitted-by: Jenkins
+Submitted-at: Mon, 02 Jul 2012 00:54:11 +0000
+Reviewed-on: https://review.openstack.org/8919
+Project: openstack/image-api
+Branch: refs/heads/master
