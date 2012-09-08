@@ -1,0 +1,9 @@
+Code-Review+1: James E. Blair <corvus@inaugust.com>
+Verified+2: Jenkins
+Approved+1: Brian Waldon <bcwaldon@gmail.com>
+Code-Review+2: Brian Waldon <bcwaldon@gmail.com>
+Submitted-by: Jenkins
+Submitted-at: Sat, 08 Sep 2012 00:10:55 +0000
+Reviewed-on: https://review.openstack.org/11958
+Project: openstack/image-api
+Branch: refs/heads/master
