@@ -96,7 +96,7 @@
                                 
                                 <!-- Copies HTML to a release folder -->                                                               
                                 <copy
-                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-image-service/1.0">
+                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-image-service/2.0">
                                     <fileset
                                         dir="${basedir}/target/docbkx/webhelp/os-image-service-devguide">
                                         <include name="**/*" />
@@ -107,7 +107,7 @@
                                 
                                 <move failonerror="false"
                                     file="${basedir}/target/docbkx/pdf/os-image-service-devguide.pdf"
-                                    tofile="${basedir}/target/docbkx/webhelp/api/openstack-image-service/1.0/os-image-service-devguide-1.0.pdf"/>
+                                    tofile="${basedir}/target/docbkx/webhelp/api/openstack-image-service/2.0/os-image-service-devguide-2.0.pdf"/>
                                 
                                 <!--Deletes leftover uneeded directories -->
                                 <delete dir="${basedir}/target/docbkx/webhelp/os-image-service-devguide"/>
@@ -120,7 +120,7 @@
                     <xincludeSupported>true</xincludeSupported>
                     <sourceDirectory>src/docbkx</sourceDirectory>
                     <includes>
-                        os-image-service-devguide.xml
+                        images-api-v2.0.xml
                     </includes>
                     <profileSecurity>reviewer</profileSecurity>
                     <branding>openstack</branding>
