@@ -8,4 +8,4 @@ Our community welcomes all people interested in open source cloud computing, and
 
 Installing
 ==========
-Refer to http://glance.openstack.org to learn more about installing an OpenStack Image Service server that can respond to these API commands. 
+Refer to http://docs.openstack.org/developer/glance/ to learn more about installing an OpenStack Image Service server that can respond to these API commands. 
