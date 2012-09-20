@@ -118,7 +118,7 @@
                 <configuration>
                     <!-- These parameters apply to pdf and webhelp -->
                     <xincludeSupported>true</xincludeSupported>
-                    <sourceDirectory>src/docbkx</sourceDirectory>
+                    <sourceDirectory>src/markdown</sourceDirectory>
                     <includes>
                         images-api-v2.0.xml
                     </includes>
