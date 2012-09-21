@@ -54,7 +54,7 @@ A client may set arbitrarily-named attributes on their images if the `image` jso
 
 The necessary [json-schema](http://tools.ietf.org/html/draft-zyp-json-schema-03) documents will be provided at predictable URIs. A consumer should be able to validate server responses and client requests based on the published schemas. The schemas contained in this document are only examples and should not be used to validate your requests. A client should **always** fetch schemas from the server.
 
-### <a id='metadata-api'></a> Metadata API
+###Metadata API
 
 The following calls allow you to create, modify, and delete image metadata records. For binary image data, see [Binary Data API](#binary-data-api).
 
@@ -350,7 +350,7 @@ Images with the 'protected' attribute set to true (boolean) cannot be deleted an
 The response will be empty with an HTTP 204 status code.
 
 
-### <a id='binary-data-api'></a> Binary Data API
+### Binary Data API
 
 The following API calls are used to upload and download raw image data. For image metadata, see [Metadata API](#metadata-api).
 
