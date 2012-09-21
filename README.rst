@@ -4,7 +4,7 @@ VM images made available through Glance can be stored in a variety of locations 
 
 Contributing
 ============
-Our community welcomes all people interested in open source cloud computing, and there are no formal membership requirements. The best way to join the community is to talk with others online or at a meetup and offer contributions through Launchpad, the OpenStack wiki, or blogs. We welcome all types of contributions, from blueprint designs to documentation to testing to deployment scripts.
+Our community welcomes all people interested in open source cloud computing, and there are no formal membership requirements. The best way to join the community is to talk with others online or at a meetup and offer contributions through the code review process, the OpenStack wiki, or blogs. We welcome all types of contributions, from blueprint designs to documentation to testing to deployment scripts.
 
 Installing
 ==========
