@@ -5,8 +5,8 @@
     xmlns:svg="http://www.w3.org/2000/svg"
     xmlns:html="http://www.w3.org/1999/xhtml"
     version="5.0"
-    >
-    <?rax pdf.url="../os-image-service-devguide-1.0.pdf"?>
+    xml:id="os-image-service-devguide">
+    <?rax pdf.url="../os-image-service-devguide-1.1.pdf"?>
     <title>OpenStack Image Service Developer Guide</title>
     <info>
         <author>
@@ -21,11 +21,12 @@
         <copyright>
             <year>2010</year>
             <year>2011</year>
+            <year>2012</year>
             <holder>OpenStack LLC</holder>
         </copyright>
-        <releaseinfo>Diablo</releaseinfo>
+        <releaseinfo>API v. 1.0/1.1</releaseinfo>
         <productname>OpenStack Image Service</productname>
-        <pubdate>2011-09-22</pubdate>
+        <pubdate>2012-09-26</pubdate>
         <legalnotice role="apache2">
             <annotation>
                 <remark>Copyright details are filled in by the template.</remark>
