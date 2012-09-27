@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Approved+1: Anne Gentle <anne@openstack.org>
+Code-Review+2: Anne Gentle <anne@openstack.org>
+Submitted-by: Jenkins
+Submitted-at: Thu, 27 Sep 2012 19:36:56 +0000
+Reviewed-on: https://review.openstack.org/13780
+Project: openstack/image-api
+Branch: refs/heads/master
