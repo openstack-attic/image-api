@@ -98,7 +98,7 @@
                                 <copy
                                     todir="${basedir}/target/docbkx/webhelp/api/openstack-image-service/2.0">
                                     <fileset
-                                        dir="${basedir}/target/docbkx/webhelp/images-api-v2.0">
+                                        dir="${basedir}/target/docbkx/webhelp/image-api-v2.0">
                                         <include name="**/*" />
                                     </fileset>
                                 </copy>
@@ -106,11 +106,11 @@
                                 <!--Moves PDFs to the needed placement -->
                                 
                                 <move failonerror="false"
-                                    file="${basedir}/target/docbkx/pdf/images-api-v2.0.pdf"
+                                    file="${basedir}/target/docbkx/pdf/image-api-v2.0.pdf"
                                     tofile="${basedir}/target/docbkx/webhelp/api/openstack-image-service/2.0/os-image-service-devguide-2.0.pdf"/>
                                 
                                 <!--Deletes leftover uneeded directories -->
-                                <delete dir="${basedir}/target/docbkx/webhelp/images-api-v2.0"/>
+                                <delete dir="${basedir}/target/docbkx/webhelp/image-api-v2.0"/>
                             </postProcess>
                         </configuration>
                     </execution>
@@ -120,7 +120,7 @@
                     <xincludeSupported>true</xincludeSupported>
                     <sourceDirectory>.</sourceDirectory>
                     <includes>
-                        images-api-v2.0.xml
+                        image-api-v2.0.xml
                     </includes>
                     <profileSecurity>reviewer</profileSecurity>
                     <branding>openstack</branding>
