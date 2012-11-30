@@ -231,7 +231,7 @@ An HTTP status of 204 will be returned.
 
 ####Delete an Image Tag
 
-**PUT /v2/images/\<IMAGE_ID\>/tags/\<TAG\>**
+**DELETE /v2/images/\<IMAGE_ID\>/tags/\<TAG\>**
 
 The tag you want to delete should be encoded into the request URI. For example, to remove the tag 'miracle' from image e7db3b45-8db7-47ad-8109-3fb55c2c24fd, you would **DELETE /v2/images/e7db3b45-8db7-47ad-8109-3fb55c2c24fd/tags/miracle**. The request body is ignored.
 
