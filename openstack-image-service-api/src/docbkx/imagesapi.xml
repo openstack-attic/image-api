@@ -387,7 +387,7 @@ POST http://glance.example.com/images/
             <literal>x-image-meta-name</literal>
           </para>
           <para>
-            This header is required. Its value should be the name of the
+            This header is optional . Its value should be the name of the
             image.
           </para>
           <para>
