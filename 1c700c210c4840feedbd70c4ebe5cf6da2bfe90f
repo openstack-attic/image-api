@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Approved+1: Tom Fifield
+Code-Review+2: Tom Fifield
+Code-Review+1: dachary
+Submitted-by: Jenkins
+Submitted-at: Fri, 04 Jan 2013 12:54:33 +0000
+Reviewed-on: https://review.openstack.org/18065
+Project: openstack/image-api
+Branch: refs/heads/master
