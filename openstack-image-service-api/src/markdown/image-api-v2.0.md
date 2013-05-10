@@ -1,4 +1,4 @@
-##Image Service API v2
+##OpenStack Image Service API Specification - API v2
 
 ###Versioning
 

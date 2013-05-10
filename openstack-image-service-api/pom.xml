@@ -9,7 +9,7 @@
     <artifactId>openstack-guide</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>OpenStack Guides</name>
+    <name>OpenStack Specifications</name>
     <!-- ################################################ -->
     <!-- USE "mvn clean generate-sources" to run this POM -->
     <!-- ################################################ -->
@@ -20,7 +20,7 @@
             <plugin>
                 <groupId>com.rackspace.cloud.api</groupId>
                 <artifactId>clouddocs-maven-plugin</artifactId>
-                <version>1.7.2</version>
+                <version>1.8.0</version>
                 <executions>
                     <execution>
                         <id>generate-webhelp</id>
@@ -38,8 +38,9 @@
                                 appendix  toc,title
                                 article/appendix  nop
                                 article   toc,title
-                                book      title,figure,table,example,equation
-                                chapter   toc,title
+                                book      toc,title,figure,table,example,equation
+                                chapter   toc
+                                section   toc
                                 part      toc,title
                                 preface   toc,title
                                 qandadiv  toc
@@ -50,7 +51,7 @@
                             <!-- The following elements sets the autonumbering of sections in output for chapter numbers but no numbered sections-->
                             <sectionAutolabel>0</sectionAutolabel>
                             <sectionLabelIncludesComponentLabel>0</sectionLabelIncludesComponentLabel>
-
+                            <tocDepthSection>1</tocDepthSection>
                             <webhelpDirname>1.1</webhelpDirname>
                             <targetDirectory>${basedir}/target/docbkx/webhelp/api/openstack-image-service</targetDirectory>
                             <includeDateInPdfFilename>0</includeDateInPdfFilename>
