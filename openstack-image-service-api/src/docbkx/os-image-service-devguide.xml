@@ -6,10 +6,9 @@
     xmlns:html="http://www.w3.org/1999/xhtml"
     version="5.0"
     xml:id="os-image-service-devguide">
-    <title>OpenStack Image Service API Specification</title>
+    <title>OpenStack Image Service API v1 Reference</title>
     <?rax title.font.size="28px" subtitle.font.size="28px" pdf.url="../os-image-service-devguide-1.1.pdf"?>
-    <titleabbrev>OpenStack Image Service API
-        Specification</titleabbrev>
+    <titleabbrev>Image Service API Reference</titleabbrev>
     <info>
         <author>
             <personname>
@@ -28,7 +27,7 @@
             <holder>OpenStack Foundation</holder>
         </copyright>
         <releaseinfo>API v1</releaseinfo>
-        <productname>OpenStack Image Service API</productname>
+        <productname>OpenStack Image Service API v1</productname>
         <pubdate></pubdate>
         <legalnotice role="apache2">
             <annotation>
@@ -38,7 +37,7 @@
         <abstract>
             <para>This document is for software developers who develop
                 applications by using the OpenStack™ Image Service Application Programming Interface
-                    (<abbrev>API</abbrev>). </para>
+                    (<abbrev>API</abbrev>) v1. </para>
         </abstract>
     </info>
     <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->
