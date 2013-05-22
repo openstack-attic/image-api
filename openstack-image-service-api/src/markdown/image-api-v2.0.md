@@ -1,4 +1,4 @@
-##OpenStack Image Service API Specification - API v2
+##OpenStack Image Service API v2 Reference
 
 ###Versioning
 
@@ -476,7 +476,7 @@ Content-Md5: 912ec803b2ce49e4a541068d495ab570
 Transfer-Encoding: chunked
 Date: Thu, 14 Aug 2012 00:47:10 GMT
 
-…
+
 ```
 
 ####Delete Image
