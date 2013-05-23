@@ -42,7 +42,7 @@
                                 chapter   toc
                                 section   toc
                                 part      toc,title
-                                preface   toc,title
+                                preface   toc
                                 qandadiv  toc
                                 qandaset  toc
                                 reference toc,title

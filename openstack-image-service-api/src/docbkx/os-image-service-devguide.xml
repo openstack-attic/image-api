@@ -36,7 +36,8 @@
         </legalnotice>
         <abstract>
             <para>This document is for software developers who develop
-                applications by using the OpenStack™ Image Service Application Programming Interface
+                applications by using the OpenStack™ Image Service 
+                Application Programming Interface
                     (<abbrev>API</abbrev>) v1. </para>
         </abstract>
     </info>

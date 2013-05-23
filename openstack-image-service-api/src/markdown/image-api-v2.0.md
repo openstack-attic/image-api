@@ -1,4 +1,6 @@
-##OpenStack Image Service API v2 Reference
+#OpenStack Image Service API v2 Reference
+
+##General API Information
 
 ###Versioning
 
@@ -46,7 +48,7 @@ An image entity is represented by a JSON-encoded data structure and its raw bina
 
 An image entity has an identifier (ID) that is guaranteed to be unique within the endpoint to which it belongs. The ID is used as a token in request URIs to interact with that specific image.
 
-An image is always guaranteed to have the following attributes: id, status, visibility, protected, tags, created_at, file and self. The other attribtues defined in the `image` schema below are guaranteed to be defined, but will only be returned with an image entity if they have been explicitly set.
+An image is always guaranteed to have the following attributes: id, status, visibility, protected, tags, created_at, file and self. The other attributes defined in the `image` schema below are guaranteed to be defined, but will only be returned with an image entity if they have been explicitly set.
 
 A client may set arbitrarily-named attributes on their images if the `image` json-schema allows it. These user-defined attributes will appear like any other image attributes. See [documentation](http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.4) of the additionalProperties json-schema attribute.
 
@@ -54,11 +56,11 @@ A client may set arbitrarily-named attributes on their images if the `image` jso
 
 The necessary [json-schema](http://tools.ietf.org/html/draft-zyp-json-schema-03) documents will be provided at predictable URIs. A consumer should be able to validate server responses and client requests based on the published schemas. The schemas contained in this document are only examples and should not be used to validate your requests. A client should **always** fetch schemas from the server.
 
-###Metadata API
+##Metadata API
 
 The following calls allow you to create, modify, and delete image metadata records. For binary image data, see [Binary Data API](#binary-data-api).
 
-####Get Images Schema
+###Get Images Schema
 
 **GET /v2/schemas/images**
 
@@ -110,7 +112,7 @@ Response body will contain a json-schema document representing an `images` entit
         ]
     }
 
-####Get Image Schema
+###Get Image Schema
 
 **GET /v2/schemas/image**
 
@@ -147,7 +149,7 @@ Response body will contain a json-schema document representing an `image`. For e
     }
 
 
-####Create an Image
+###Create an Image
 
 **POST /v2/images**
 
@@ -175,7 +177,7 @@ Successful HTTP response will be 201 Created with a Location header containing t
     }
 
 
-####Update an Image
+###Update an Image
 
 **PATCH /v2/images/\<IMAGE_ID\>**
 
@@ -216,7 +218,7 @@ Similarly, to remove a property such as "login-user" from an image, use the foll
 See Appendix B for more details about the 'application/openstack-images-v2.0-json-patch' media type.
 
 
-####Add an Image Tag
+###Add an Image Tag
 
 **PUT /v2/images/\<IMAGE_ID\>/tags/\<TAG\>**
 
@@ -229,7 +231,7 @@ An image can only be tagged once with a specific string. Multiple attempts to ta
 An HTTP status of 204 will be returned.
 
 
-####Delete an Image Tag
+###Delete an Image Tag
 
 **DELETE /v2/images/\<IMAGE_ID\>/tags/\<TAG\>**
 
@@ -239,7 +241,7 @@ An HTTP status of 204 will be returned. Subsequent attempts to delete the tag wi
 
 
 
-####List All Images
+###List All Images
 
 **GET /v2/images**
 
@@ -299,7 +301,7 @@ Response body will be a list of images available to the client. For example:
 
 **Pagination**
 
-This call is designed to return a subset of the larger collection of images while providing a link that can be used to retreive the next. You should always check for the presence of a 'next' link and use it as the URI in a subsequent HTTP GET request. You should follow this pattern until there a 'next' link is no longer provided. The next link will preserve any query parameters you send in your initial request. The 'first' link can be used to jump back to the first page of the collection.
+This call is designed to return a subset of the larger collection of images while providing a link that can be used to retrieve the next. You should always check for the presence of a 'next' link and use it as the URI in a subsequent HTTP GET request. You should follow this pattern until there a 'next' link is no longer provided. The next link will preserve any query parameters you send in your initial request. The 'first' link can be used to jump back to the first page of the collection.
 
 If you prefer to paginate through images manually, the API provides two query parameters: 'limit' and 'marker'. The limit parameter is used to request a specific page size. Expect a response to a limited request to return between zero and *limit* items. The marker parameter is used to indicate the id of the last-seen image. The typical pattern of limit and marker is to make an initial limited request then to use the id of the last image from the response as the marker parameter in a subsequent limited request.
 
@@ -315,7 +317,7 @@ The 'size_min' and 'size_max' query parameters can be used to do greater-than an
 
 The results of this operation can be ordered using the 'sort_key' and 'sort_dir' parameters. The API uses the natural sorting of whatever image attribute is provided as the 'sort_key'. All image attributes can be used as the sort_key (except tags and link attributes). The sort_dir parameter indicates in which direction to sort. Acceptable values are 'asc' (ascending) and 'desc' (descending). Defaults values for sort_key and sort_dir are 'created_at' and 'desc'.
 
-####Get an Image
+###Get an Image
 
 **GET /v2/images/\<IMAGE_ID\>**
 
@@ -339,7 +341,7 @@ Response body will be a single image entity. Using **GET /v2/image/da3b75d9-3f4a
     }
 
 
-####Delete an Image
+###Delete an Image
 
 **DELETE /v2/images/\<IMAGE_ID\>**
 
@@ -350,11 +352,11 @@ Images with the 'protected' attribute set to true (boolean) cannot be deleted an
 The response will be empty with an HTTP 204 status code.
 
 
-### Binary Data API
+## Binary Data API
 
 The following API calls are used to upload and download raw image data. For image metadata, see [Metadata API](#metadata-api).
 
-####Store Image File
+###Store Image File
 
 **PUT /v2/images/\<IMAGE_ID\>/file**
 
@@ -364,7 +366,7 @@ Request Content-Type must be 'application/octet-stream'. Complete contents of re
 
 Response status will be 204.
 
-####Get Image File
+###Get Image File
 
 **GET /v2/images/\<IMAGE_ID\>/file**
 
@@ -372,11 +374,11 @@ Request body ignored.
 
 Response body will be the raw binary data that represents the actual virtual disk. The Content-Type header will be 'application/octet-stream'.
 
-The [Content-MD5](http://www.ietf.org/rfc/rfc1864.txt) header will contain an MD5 checksum of the image data. Clients are encouraged to verify the integrity of the image data they recieve using this checksum.
+The [Content-MD5](http://www.ietf.org/rfc/rfc1864.txt) header will contain an MD5 checksum of the image data. Clients are encouraged to verify the integrity of the image data they receive using this checksum.
 
 If no image data has been stored, an HTTP status of 204 will be returned.
 
-###Appendix A: cURL Examples
+##Appendix A: cURL Examples
 
 This section is intended to provide a series of commands a typical client of the API might use to create and modify an image.
 
@@ -384,7 +386,7 @@ These commands assume the implementation of the v2 Images API is using the OpenS
 
 The strings $OS_IMAGE_URL and $OS_AUTH_TOKEN represent variables defined in the client's environment. $OS_IMAGE_URL is the full path to your image service endpoint, i.e. 'http://localhost:9292'. $OS_AUTH_TOKEN represents an auth token generated by the OpenStack Identity Service, i.e. '6583fb17c27b48b4b4a6033fe9cc0fe0'.
 
-####Create an Image
+###Create an Image
 ```
 % curl -i -X POST -H "X-Auth-Token: $OS_AUTH_TOKEN" \
        -H "Content-Type: application/json" \
@@ -414,7 +416,7 @@ Date: Tue, 14 Aug 2012 00:46:48 GMT
 }
 ```
 
-####Update the Image
+###Update the Image
 
 ```
 % curl -i -X PUT -H "X-Auth-Token: $OS_AUTH_TOKEN" \
@@ -445,7 +447,7 @@ Date: Tue, 14 Aug 2012 00:46:50 GMT
 }
 ```
 
-####Upload Binary Image Data
+###Upload Binary Image Data
 
 ```
 % curl -i -X PUT -H "X-Auth-Token: $OS_AUTH_TOKEN" \
@@ -462,7 +464,7 @@ Content-Length: 0
 Date: Tue, 14 Aug 2012 00:46:59 GMT
 ```
 
-####Download Binary Image Data
+###Download Binary Image Data
 
 ```
 % curl -i -X GET -H "X-Auth-Token: $OS_AUTH_TOKEN" \
@@ -479,7 +481,7 @@ Date: Thu, 14 Aug 2012 00:47:10 GMT
 
 ```
 
-####Delete Image
+###Delete Image
 
 ```
 % curl -i -X DELETE -H "X-Auth-Token: $OS_AUTH_TOKEN" \
@@ -492,15 +494,15 @@ Content-Length: 0
 Date: Tue, 14 Aug 2012 00:47:12 GMT
 ```
 
-###Appendix B: HTTP PATCH media types
+##Appendix B: HTTP PATCH media types
 
-####Overview
+###Overview
 
 The HTTP PATCH request must provide a media type for the server to determine how the patch should be applied to an image resource. An unsupported media type will result in an HTTP error response with the 415 status code. For image resources, the only supported media type for patch requests is 'application/openstack-images-v2.0-json-patch'.
 
 The 'application/openstack-images-v2.0-json-patch' media type is intended to provide a useful and compatible subset of the functionality defined in the standard ['application/json-patch' media type](http://tools.ietf.org/html/draft-ietf-appsawg-json-patch).
 
-####Restricted JSON Pointers
+###Restricted JSON Pointers
 
 The 'application/openstack-images-v2.0-json-patch' media type defined in this appendix adopts a restricted form of [JSON-Pointers](http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer). A restricted JSON pointer is a [Unicode](http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03#ref-Unicode) string containing a sequence of exactly one reference token, prefixed by a '/' (%x2F) character.
 
@@ -540,7 +542,7 @@ the following restricted JSON pointers evaluate to the accompanying values:
     "/tags"        ["ping", "pong"]
     "/~0~1.ssh~1"  "present"
 
-####Operations
+###Operations
 
 The 'application/openstack-images-v2.0-json-patch' media type supports a subset of the operations defined in the 'application/json-patch' media type. The operation to perform is expressed in a member of the operation object. The name of the operation member is one of: "add", "remove", "replace".
 
