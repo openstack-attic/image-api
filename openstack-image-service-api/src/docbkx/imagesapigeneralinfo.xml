@@ -3,12 +3,12 @@
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" 
     xml:id="general-api-information-glance">
     <title>General API Information</title>
+<?dbhtml stop-chunking?>
     <section xml:id="glance-authentication">
         <title>Authentication</title>
-
-        <para>Glance may optionally be integrated with Keystone, the
+        <para>You can optionally integrate Glance with the
             OpenStack Identity Service project. Setting this up is
-            relatively straightforward: the Keystone distribution at
+            relatively straightforward: the Identity Service distribution at
                 <link
                 xlink:href="http://github.com/openstack/keystone"
                 >http://github.com/openstack/keystone</link> includes
@@ -21,7 +21,6 @@
             and the is_public attribute will cause access to those
             images for which it is false to be restricted to only the
             owner.</para>
-
         <para>The exception is those images for which owner is set to
             null, which may only be done by those users having the
             Admin role. These images may still be accessed by the
