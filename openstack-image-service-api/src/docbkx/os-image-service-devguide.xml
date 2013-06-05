@@ -6,7 +6,7 @@
     xmlns:html="http://www.w3.org/1999/xhtml" version="5.0"
     xml:id="os-image-service-devguide">
     <title>OpenStack Image Service API v1 Reference</title>
-    <?rax title.font.size="28px" subtitle.font.size="28px"?>
+    <?rax title.font.size="26px" subtitle.font.size="26px"?>
     <titleabbrev>Image Service API Reference</titleabbrev>
     <info>
         <author>
