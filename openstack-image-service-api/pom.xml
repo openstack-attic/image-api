@@ -51,7 +51,7 @@
                             <!-- The following elements sets the autonumbering of sections in output for chapter numbers but no numbered sections-->
                             <sectionAutolabel>0</sectionAutolabel>
                             <sectionLabelIncludesComponentLabel>0</sectionLabelIncludesComponentLabel>
-                            <tocDepthSection>1</tocDepthSection>
+                            <tocSectionDepth>1</tocSectionDepth>
                             <webhelpDirname>1.1</webhelpDirname>
                             <targetDirectory>${basedir}/target/docbkx/webhelp/api/openstack-image-service</targetDirectory>
                             <includeDateInPdfFilename>0</includeDateInPdfFilename>
