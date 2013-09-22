@@ -240,7 +240,6 @@ The tag you want to delete should be encoded into the request URI. For example, 
 An HTTP status of 204 will be returned. Subsequent attempts to delete the tag will result in a 404.
 
 
-
 ###List All Images
 
 **GET /v2/images**
@@ -351,6 +350,689 @@ Images with the 'protected' attribute set to true (boolean) cannot be deleted an
 
 The response will be empty with an HTTP 204 status code.
 
+
+###Image Sharing
+
+####How image sharing works
+
+Let the "producer" be a tenant who owns image 71c675ab-d94f-49cd-a114-e12490b328d9, and let the "consumer" be a tenant who would like to boot an instance from that image.
+
+The producer can share the image with the consumer by making the consumer a **member** of that image.
+
+To prevent spamming, the consumer must **accept** the image before it will be included in the consumer's image list.
+
+The consumer can still boot from the image, however, if the consumer knows the image ID.
+
+In summary:
+
+* The image producer may add or remove image members, but may not modify the member status of an image member.
+* An image consumer may change his or her member status, but may not add or remove him or herself as an image member.
+* A consumer may boot an instance from a shared image regardless of whether he/she has "accepted" the image.
+
+#####Producer-Consumer Communication
+
+No provision is made in this API for producer-consumer communication.
+All such communication must be done independently of the API.
+
+An example workflow is:
+
+1. The producer posts the availability of specific images on a public website.
+1. A potential consumer provides the producer with his/her tenant ID and email address.
+1. The producer uses the Images v2 API to share the image with the consumer.
+1. The producer notifies the consumer via email that the image has been shared and what its UUID is.
+1. If the consumer wishes the image to appear in his/her image list, the Images v2 API is used to change the image status to `accepted`.
+1. If the consumer subsequently wishes to hide the image, the Images v2 API may be used to change the member status to `rejected`.
+If the consumer wishes to hide the image, but is open to the possibility of being reminded by the producer that the image is available, the Images v2 API may be used to change the member status to `pending`.
+
+Note that as far as this API is concerned, the member status has only two effects:
+
+* If the member status is *not* `accepted`, the image will not appear in the consumer's default image list.
+* The consumer's image list may be filtered by status to see shared images in the various member statuses.
+For example, the consumer can discover images that have been shared with him or her by filtering on `visibility=shared&member_status=pending`.
+
+####Image Sharing Schemas
+
+#####Get Image Member Schema
+
+**GET /v2/schemas/member**
+
+Request body ignored.
+
+Response body will contain a json-schema document representing an image `member` entity.
+
+The response from the API should be considered authoritative.
+The schema is reproduced here solely for your convenience:
+
+    {
+        "name": "member",
+        "properties": {
+            "created_at": {
+                "description": "Date and time of image member creation",
+                "type": "string"
+            },
+            "image_id": {
+                "description": "An identifier for the image",
+                "pattern": "^([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}$",
+                "type": "string"
+            },
+            "member_id": {
+                "description": "An identifier for the image member (tenantId)",
+                "type": "string"
+            },
+            "status": {
+                "description": "The status of this image member",
+                "enum": [
+                    "pending",
+                    "accepted",
+                    "rejected"
+                ],
+                "type": "string"
+            },
+            "updated_at": {
+                "description": "Date and time of last modification of image member",
+                "type": "string"
+            },
+            "schema": {
+                "type": "string"
+            }
+        }
+    }
+
+#####Get Image Members Schema
+
+**GET /v2/schemas/members**
+
+Request body ignored.
+
+Response body will contain a json-schema document representing an image `members` entity (a container of `member` entities).
+
+The response from the API should be considered authoritative.
+The schema is reproduced here solely for your convenience:
+
+    {
+        "name": "members",
+        "properties": {
+            "members": {
+                "items": {
+                    "name": "member",
+                    "properties": {
+                        "created_at": {
+                            "description": "Date and time of image member creation",
+                            "type": "string"
+                        },
+                        "image_id": {
+                            "description": "An identifier for the image",
+                            "pattern": "^([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}$",
+                            "type": "string"
+                        },
+                        "member_id": {
+                            "description": "An identifier for the image member (tenantId)",
+                            "type": "string"
+                        },
+                        "status": {
+                            "description": "The status of this image member",
+                            "enum": [
+                                "pending",
+                                "accepted",
+                                "rejected"
+                            ],
+                            "type": "string"
+                        },
+                        "updated_at": {
+                            "description": "Date and time of last modification of image member",
+                            "type": "string"
+                        },
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "array"
+            },
+            "schema": {
+                "type": "string"
+            }
+        },
+        "links": [
+            {
+                "href": "{schema}",
+                "rel": "describedby"
+            }
+        ]
+    }
+
+####Image Producer Calls
+
+#####Create an Image Member
+
+**POST /v2/images/<IMAGE\_ID>/members**
+
+The request body must be JSON in the following format:
+
+    {
+        "member": "<MEMBER_ID>"
+    }
+
+where the MEMBER_ID is the ID of the tenant with whom the image is to be shared.
+
+The member status of a newly created image member is `pending`.
+
+If the user making the call is not the image owner, the response is HTTP status code 404.
+
+The response will conform to the JSON schema available at **/v2/schemas/member**, for example,
+
+    {
+        "created_at": "2013-09-19T20:36:53Z",
+        "image_id": "71c675ab-d94f-49cd-a114-e12490b328d9",
+        "member_id": "8989447062e04a818baf9e073fd04fa7",
+        "schema": "/v2/schemas/member",
+        "status": "pending",
+        "updated_at": "2013-09-19T20:36:53Z"
+    }
+
+#####Delete an Image Member
+
+**DELETE /v2/images/<IMAGE\_ID>/members/<MEMBER\_ID>**
+
+A successful response is 204 (No Content).
+
+The call will return HTTP status code 404 if MEMBER_ID is not an image member of the specified image.
+
+The call will return HTTP status code 404 if the user making the call is not the image owner.
+
+####Image Consumer Calls
+
+#####Update an Image Member
+
+**PUT /v2/images/\<IMAGE\_ID\>/members/\<MEMBER\_ID\>**
+
+The body of the request is a JSON object specifying the member status to which the image member should be updated:
+
+    {
+        "status": "<STATUS_VALUE>"
+    }
+
+where <STATUS_VALUE> is one of { `pending`, `accepted`, or `rejected` }.
+
+The response will conform to the JSON schema available at **/v2/schemas/member**, for example,
+
+    {
+        "created_at": "2013-09-20T19:22:19Z",
+        "image_id": "a96be11e-8536-4910-92cb-de50aa19dfe6",
+        "member_id": "8989447062e04a818baf9e073fd04fa7",
+        "schema": "/v2/schemas/member",
+        "status": "accepted",
+        "updated_at": "2013-09-20T20:15:31Z"
+    }
+
+
+If the call is made by the image owner, the response is HTTP status code 403 (Forbidden).
+
+If the call is made by a user who is not the image owner and whose tenant ID is not the same as the MEMBER_ID, the response is HTTP status code 404.
+
+#####Image Member Status Values
+
+There are three image member status values:
+
+* `pending`: When a member is created, its status is set to `pending`.
+The image is not visible in the member's image-list, but the member can still boot instances from the image.
+* `accepted`: When a member's status is `accepted`, the image is visible in the member's image-list.
+The member can boot instances from the image.
+* `rejected`: When a member's status is `rejected`, the member has decided that he or she does not wish to see the image.
+The image is not visible in the member's image-list, but the member can still boot instances from the image.
+
+####Calls for Both Producers and Consumers
+
+#####List Image Members
+
+**GET /v2/images/\<imageId\>/members**
+
+The response will conform to the JSON schema available at **/v2/schemas/members**, for example,
+
+    {
+        "members": [
+            {
+                "created_at": "2013-09-20T19:16:53Z",
+                "image_id": "a96be11e-8536-4910-92cb-de50aa19dfe6",
+                "member_id": "818baf9e073fd04fa78989447062e04a",
+                "schema": "/v2/schemas/member",
+                "status": "pending",
+                "updated_at": "2013-09-20T19:16:53Z"
+            },
+            {
+                "created_at": "2013-09-20T19:22:19Z",
+                "image_id": "a96be11e-8536-4910-92cb-de50aa19dfe6",
+                "member_id": "8989447062e04a818baf9e073fd04fa7",
+                "schema": "/v2/schemas/member",
+                "status": "pending",
+                "updated_at": "2013-09-20T19:22:19Z"
+            }
+        ],
+        "schema": "/v2/schemas/members"
+    }
+
+If the call is made by a user with whom the image has been shared, the member-list will contain *only* the information for that user.
+For example, if the call is made by tenant 8989447062e04a818baf9e073fd04fa7, the response will be:
+
+    {
+        "members": [
+            {
+                "created_at": "2013-09-20T19:22:19Z",
+                "image_id": "a96be11e-8536-4910-92cb-de50aa19dfe6",
+                "member_id": "8989447062e04a818baf9e073fd04fa7",
+                "schema": "/v2/schemas/member",
+                "status": "pending",
+                "updated_at": "2013-09-20T19:22:19Z"
+            }
+        ],
+        "schema": "/v2/schemas/members"
+    }
+
+If the call is made by a user with whom the image is *not* shared, the response will be a 404.
+
+#####List Shared Images
+
+Shared images are listed as part of the normal image list call (see [List All Images](#
+
+**GET /v2/images**
+
+Request body ignored.
+
+Response body will be a list of images available to the client. For example:
+
+    {
+        "images": [
+            {
+                "id": "da3b75d9-3f4a-40e7-8a2c-bfab23927dea",
+                "name": "cirros-0.3.0-x86_64-uec-ramdisk",
+                "status": "active",
+                "visibility": "public",
+                "size": 2254249,
+                "checksum": "2cec138d7dae2aa59038ef8c9aec2390",
+                "tags": ["ping", "pong"],
+                "created_at": "2012-08-10T19:23:50Z",
+                "updated_at": "2012-08-10T19:23:50Z",
+                "self": "/v2/images/da3b75d9-3f4a-40e7-8a2c-bfab23927dea",
+                "file": "/v2/images/da3b75d9-3f4a-40e7-8a2c-bfab23927dea/file",
+                "schema": "/v2/schemas/image"
+            },
+            {
+                "id": "0d5bcbc7-b066-4217-83f4-7111a60a399a",
+                "name": "cirros-0.3.0-x86_64-uec",
+                "status": "active",
+                "visibility": "public",
+                "size": 25165824,
+                "checksum": "2f81976cae15c16ef0010c51e3a6c163",
+                "tags": [],
+                "created_at": "2012-08-10T19:23:50Z",
+                "updated_at": "2012-08-10T19:23:50Z",
+                "self": "/v2/images/0d5bcbc7-b066-4217-83f4-7111a60a399a",
+                "file": "/v2/images/0d5bcbc7-b066-4217-83f4-7111a60a399a/file",
+                "schema": "/v2/schemas/image"
+            },
+            {
+                "id": "e6421c88-b1ed-4407-8824-b57298249091",
+                "name": "cirros-0.3.0-x86_64-uec-kernel",
+                "status": "active",
+                "visibility": "public",
+                "size": 4731440,
+                "checksum": "cfb203e7267a28e435dbcb05af5910a9",
+                "tags": [],
+                "created_at": "2012-08-10T19:23:49Z",
+                "updated_at": "2012-08-10T19:23:49Z",
+                "self": "/v2/images/e6421c88-b1ed-4407-8824-b57298249091",
+                "file": "/v2/images/e6421c88-b1ed-4407-8824-b57298249091/file",
+                "schema": "/v2/schemas/image"
+            }
+        ],
+        "first": "/v2/images?limit=3",
+        "next": "/v2/images?limit=3&marker=e6421c88-b1ed-4407-8824-b57298249091",
+        "schema": "/v2/schemas/images"
+    }
+
+**Pagination**
+
+This call is designed to return a subset of the larger collection of images while providing a link that can be used to retrieve the next. You should always check for the presence of a 'next' link and use it as the URI in a subsequent HTTP GET request. You should follow this pattern until there a 'next' link is no longer provided. The next link will preserve any query parameters you send in your initial request. The 'first' link can be used to jump back to the first page of the collection.
+
+If you prefer to paginate through images manually, the API provides two query parameters: 'limit' and 'marker'. The limit parameter is used to request a specific page size. Expect a response to a limited request to return between zero and *limit* items. The marker parameter is used to indicate the id of the last-seen image. The typical pattern of limit and marker is to make an initial limited request then to use the id of the last image from the response as the marker parameter in a subsequent limited request.
+
+**Filtering**
+
+The list operation accepts several types of query parameters intended to filter the results of the returned collection.
+
+A client can provide direct comparison filters using *most* image attributes (i.e. name=Ubuntu, visibility=public, etc). A client cannot filter on tags or anything defined as a 'link' in the json-schema (i.e. self, file, schema).
+
+The 'size_min' and 'size_max' query parameters can be used to do greater-than and less-than filtering of images based on their 'size' attribute ('size' is measured in bytes and refers to the size of an image when stored on disk). For example, sending a size_min filter of 1048576 and size_max of 4194304 would filter the container to include only images that are between one and four megabytes in size.
+
+**Sorting**
+
+The results of this operation can be ordered using the 'sort_key' and 'sort_dir' parameters. The API uses the natural sorting of whatever image attribute is provided as the 'sort_key'. All image attributes can be used as the sort_key (except tags and link attributes). The sort_dir parameter indicates in which direction to sort. Acceptable values are 'asc' (ascending) and 'desc' (descending). Defaults values for sort_key and sort_dir are 'created_at' and 'desc'.
+
+###Get an Image
+
+**GET /v2/images/\<IMAGE_ID\>**
+
+Request body ignored.
+
+Response body will be a single image entity. Using **GET /v2/image/da3b75d9-3f4a-40e7-8a2c-bfab23927dea** as an example:
+
+    {
+        "id": "da3b75d9-3f4a-40e7-8a2c-bfab23927dea",
+        "name": "cirros-0.3.0-x86_64-uec-ramdisk",
+        "status": "active",
+        "visibility": "public",
+        "size": 2254249,
+        "checksum": "2cec138d7dae2aa59038ef8c9aec2390",
+        "tags": ["ping", "pong"],
+        "created_at": "2012-08-10T19:23:50Z",
+        "updated_at": "2012-08-10T19:23:50Z",
+        "self": "/v2/images/da3b75d9-3f4a-40e7-8a2c-bfab23927dea",
+        "file": "/v2/images/da3b75d9-3f4a-40e7-8a2c-bfab23927dea/file",
+        "schema": "/v2/schemas/image"
+    }
+
+
+###Delete an Image
+
+**DELETE /v2/images/\<IMAGE_ID\>**
+
+Encode the ID of the image into the request URI. Request body is ignored.
+
+Images with the 'protected' attribute set to true (boolean) cannot be deleted and the response will have an HTTP 403 status code. You must first set the 'protected' attribute to false (boolean) and then perform the delete.
+
+The response will be empty with an HTTP 204 status code.
+
+
+###Image Sharing
+
+####How image sharing works
+
+Let the "producer" be a tenant who owns image 71c675ab-d94f-49cd-a114-e12490b328d9, and let the "consumer" be a tenant who would like to boot an instance from that image.
+
+The producer can share the image with the consumer by making the consumer a **member** of that image.
+
+To prevent spamming, the consumer must **accept** the image before it will be included in the consumer's image list.
+
+The consumer can still boot from the image, however, if the consumer knows the image ID.
+
+In summary:
+
+* The image producer may add or remove image members, but may not modify the member status of an image member.
+* An image consumer may change his or her member status, but may not add or remove him or herself as an image member.
+* A consumer may boot an instance from a shared image regardless of whether he/she has "accepted" the image.
+
+#####Producer-Consumer Communication
+
+No provision is made in this API for producer-consumer communication.
+All such communication must be done independently of the API.
+
+An example workflow is:
+
+1. The producer posts the availability of specific images on a public website.
+1. A potential consumer provides the producer with his/her tenant ID and email address.
+1. The producer uses the Images v2 API to share the image with the consumer.
+1. The producer notifies the consumer via email that the image has been shared and what its UUID is.
+1. If the consumer wishes the image to appear in his/her image list, the Images v2 API is used to change the image status to `accepted`.
+1. If the consumer subsequently wishes to hide the image, the Images v2 API may be used to change the member status to `rejected`.
+If the consumer wishes to hide the image, but is open to the possibility of being reminded by the producer that the image is available, the Images v2 API may be used to change the member status to `pending`.
+
+Note that as far as this API is concerned, the member status has only two effects:
+
+* If the member status is *not* `accepted`, the image will not appear in the consumer's default image list.
+* The consumer's image list may be filtered by status to see shared images in the various member statuses.
+For example, the consumer can discover images that have been shared with him or her by filtering on `visibility=shared&member_status=pending`.
+
+####Image Sharing Schemas
+
+#####Get Image Member Schema
+
+**GET /v2/schemas/member**
+
+Request body ignored.
+
+Response body will contain a json-schema document representing an image `member` entity.
+
+The response from the API should be considered authoritative.
+The schema is reproduced here solely for your convenience:
+
+    {
+        "name": "member",
+        "properties": {
+            "created_at": {
+                "description": "Date and time of image member creation",
+                "type": "string"
+            },
+            "image_id": {
+                "description": "An identifier for the image",
+                "pattern": "^([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}$",
+                "type": "string"
+            },
+            "member_id": {
+                "description": "An identifier for the image member (tenantId)",
+                "type": "string"
+            },
+            "status": {
+                "description": "The status of this image member",
+                "enum": [
+                    "pending",
+                    "accepted",
+                    "rejected"
+                ],
+                "type": "string"
+            },
+            "updated_at": {
+                "description": "Date and time of last modification of image member",
+                "type": "string"
+            },
+            "schema": {
+                "type": "string"
+            }
+        }
+    }
+
+#####Get Image Members Schema
+
+**GET /v2/schemas/members**
+
+Request body ignored.
+
+Response body will contain a json-schema document representing an image `members` entity (a container of `member` entities).
+
+The response from the API should be considered authoritative.
+The schema is reproduced here solely for your convenience:
+
+    {
+        "name": "members",
+        "properties": {
+            "members": {
+                "items": {
+                    "name": "member",
+                    "properties": {
+                        "created_at": {
+                            "description": "Date and time of image member creation",
+                            "type": "string"
+                        },
+                        "image_id": {
+                            "description": "An identifier for the image",
+                            "pattern": "^([0-9a-fA-F]){8}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){4}-([0-9a-fA-F]){12}$",
+                            "type": "string"
+                        },
+                        "member_id": {
+                            "description": "An identifier for the image member (tenantId)",
+                            "type": "string"
+                        },
+                        "status": {
+                            "description": "The status of this image member",
+                            "enum": [
+                                "pending",
+                                "accepted",
+                                "rejected"
+                            ],
+                            "type": "string"
+                        },
+                        "updated_at": {
+                            "description": "Date and time of last modification of image member",
+                            "type": "string"
+                        },
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "array"
+            },
+            "schema": {
+                "type": "string"
+            }
+        },
+        "links": [
+            {
+                "href": "{schema}",
+                "rel": "describedby"
+            }
+        ]
+    }
+
+####Image Producer Calls
+
+#####Create an Image Member
+
+**POST /v2/images/<IMAGE\_ID>/members**
+
+The request body must be JSON in the following format:
+
+    {
+        "member": "<MEMBER_ID>"
+    }
+
+where the MEMBER_ID is the ID of the tenant with whom the image is to be shared.
+
+The member status of a newly created image member is `pending`.
+
+If the user making the call is not the image owner, the response is HTTP status code 404.
+
+The response will conform to the JSON schema available at **/v2/schemas/member**, for example,
+
+    {
+        "created_at": "2013-09-19T20:36:53Z",
+        "image_id": "71c675ab-d94f-49cd-a114-e12490b328d9",
+        "member_id": "8989447062e04a818baf9e073fd04fa7",
+        "schema": "/v2/schemas/member",
+        "status": "pending",
+        "updated_at": "2013-09-19T20:36:53Z"
+    }
+
+#####Delete an Image Member
+
+**DELETE /v2/images/<IMAGE\_ID>/members/<MEMBER\_ID>**
+
+A successful response is 204 (No Content).
+
+The call will return HTTP status code 404 if MEMBER_ID is not an image member of the specified image.
+
+The call will return HTTP status code 404 if the user making the call is not the image owner.
+
+####Image Consumer Calls
+
+#####Update an Image Member
+
+**PUT /v2/images/\<IMAGE\_ID\>/members/\<MEMBER\_ID\>**
+
+The body of the request is a JSON object specifying the member status to which the image member should be updated:
+
+    {
+        "status": "<STATUS_VALUE>"
+    }
+
+where <STATUS_VALUE> is one of { `pending`, `accepted`, or `rejected` }.
+
+The response will conform to the JSON schema available at **/v2/schemas/member**, for example,
+
+    {
+        "created_at": "2013-09-20T19:22:19Z",
+        "image_id": "a96be11e-8536-4910-92cb-de50aa19dfe6",
+        "member_id": "8989447062e04a818baf9e073fd04fa7",
+        "schema": "/v2/schemas/member",
+        "status": "accepted",
+        "updated_at": "2013-09-20T20:15:31Z"
+    }
+
+
+If the call is made by the image owner, the response is HTTP status code 403 (Forbidden).
+
+If the call is made by a user who is not the image owner and whose tenant ID is not the same as the MEMBER_ID, the response is HTTP status code 404.
+
+#####Image Member Status Values
+
+There are three image member status values:
+
+* `pending`: When a member is created, its status is set to `pending`.
+The image is not visible in the member's image-list, but the member can still boot instances from the image.
+* `accepted`: When a member's status is `accepted`, the image is visible in the member's image-list.
+The member can boot instances from the image.
+* `rejected`: When a member's status is `rejected`, the member has decided that he or she does not wish to see the image.
+The image is not visible in the member's image-list, but the member can still boot instances from the image.
+
+####Calls for Both Producers and Consumers
+
+#####List Image Members
+
+**GET /v2/images/\<imageId\>/members**
+
+The response will conform to the JSON schema available at **/v2/schemas/members**, for example,
+
+    {
+        "members": [
+            {
+                "created_at": "2013-09-20T19:16:53Z",
+                "image_id": "a96be11e-8536-4910-92cb-de50aa19dfe6",
+                "member_id": "818baf9e073fd04fa78989447062e04a",
+                "schema": "/v2/schemas/member",
+                "status": "pending",
+                "updated_at": "2013-09-20T19:16:53Z"
+            },
+            {
+                "created_at": "2013-09-20T19:22:19Z",
+                "image_id": "a96be11e-8536-4910-92cb-de50aa19dfe6",
+                "member_id": "8989447062e04a818baf9e073fd04fa7",
+                "schema": "/v2/schemas/member",
+                "status": "pending",
+                "updated_at": "2013-09-20T19:22:19Z"
+            }
+        ],
+        "schema": "/v2/schemas/members"
+    }
+
+If the call is made by a user with whom the image has been shared, the member-list will contain *only* the information for that user.
+For example, if the call is made by tenant 8989447062e04a818baf9e073fd04fa7, the response will be:
+
+    {
+        "members": [
+            {
+                "created_at": "2013-09-20T19:22:19Z",
+                "image_id": "a96be11e-8536-4910-92cb-de50aa19dfe6",
+                "member_id": "8989447062e04a818baf9e073fd04fa7",
+                "schema": "/v2/schemas/member",
+                "status": "pending",
+                "updated_at": "2013-09-20T19:22:19Z"
+            }
+        ],
+        "schema": "/v2/schemas/members"
+    }
+
+If the call is made by a user with whom the image is *not* shared, the response will be a 404.
+
+#####List Shared Images
+
+Shared images are listed as part of the normal image list call.
+In this section we emphasize some useful filtering options.
+
+* `visibility=shared`: show only images shared with me where my member status is 'accepted'
+* `visibility=shared&member_status=accepted`: same as above
+* `visibility=shared&member_status=pending`: show only images shared with me where my member status is 'pending'
+* `visibility=shared&member_status=rejected`: show only images shared with me where my member status is 'rejected'
+* `visibility=shared&member_status=all`: show all images shared with me regardless of my member status
+* `owner=<OWNER_ID>`: show only images shared with me by the user whose tenant ID is OWNER\_ID
 
 ## Binary Data API
 
