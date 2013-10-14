@@ -219,6 +219,12 @@ Similarly, to remove a property such as "login-user" from an image, use the foll
 
 See Appendix B for more details about the 'application/openstack-images-v2.0-json-patch' media type.
 
+**Property Protections**
+
+Version 2.2 of the Images API introduces *property protections*, an optional feature whereby a cloud provider may assign CRUD protections to image properties.
+Thus, you may not be able to update or delete some image properties or you may have to follow a particular naming convention when creating your own custom image properties.
+Consult your cloud provider for details.
+
 
 ##Add an Image Tag
 
@@ -318,6 +324,12 @@ The 'size_min' and 'size_max' query parameters can be used to do greater-than an
 
 The results of this operation can be ordered using the 'sort_key' and 'sort_dir' parameters. The API uses the natural sorting of whatever image attribute is provided as the 'sort_key'. All image attributes can be used as the sort_key (except tags and link attributes). The sort_dir parameter indicates in which direction to sort. Acceptable values are 'asc' (ascending) and 'desc' (descending). Defaults values for sort_key and sort_dir are 'created_at' and 'desc'.
 
+**Property Protections**
+
+Version 2.2 of the Images API introduces *property protections*, an optional feature whereby a cloud provider may assign CRUD protections to image properties.
+Thus, you may not be able to view some image properties if your cloud provider has made them non-readable for users.
+Consult your cloud provider for details.
+
 ##Get an Image
 
 **GET /v2/images/\<IMAGE_ID\>**
@@ -340,6 +352,12 @@ Response body will be a single image entity. Using **GET /v2/image/da3b75d9-3f4a
         "file": "/v2/images/da3b75d9-3f4a-40e7-8a2c-bfab23927dea/file",
         "schema": "/v2/schemas/image"
     }
+
+**Property Protections**
+
+Version 2.2 of the Images API introduces *property protections*, an optional feature whereby a cloud provider may assign CRUD protections to image properties.
+Thus, you may not be able to view some image properties if your cloud provider has made them non-readable for users.
+Consult your cloud provider for details.
 
 
 ##Delete an Image
