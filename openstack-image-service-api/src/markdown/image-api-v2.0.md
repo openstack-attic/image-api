@@ -16,6 +16,14 @@ The Image Service API v2 follows the lead of the v1 API and use a major version 
 The interface will not be reduced with subsequent minor version releases, it will only be expanded. For example, everything in v2.1 will be available in v2.2.
 
 
+**Property Protections**
+
+Version 2.2 of the Images API acknowledges the ability of a cloud provider to employ *property protections*, an optional feature whereby CRUD protections may be applied to image properties.
+Thus, in particular deployments, non-admin users may not be able to view, update, or delete some image properties.
+Additionally, non-admin users may be forced to follow a particular naming convention when creating custom image properties.
+It is left to the cloud provider to communicate policies concerning property protections to users.
+
+
 ##HTTP Response Status Codes
 
 The following HTTP status codes are all valid responses:
@@ -219,6 +227,11 @@ Similarly, to remove a property such as "login-user" from an image, use the foll
 
 See Appendix B for more details about the 'application/openstack-images-v2.0-json-patch' media type.
 
+**Property Protections**
+
+Version 2.2 of the Images API acknowledges the ability of a cloud provider to employ *property protections*.
+Thus, there may be image properties that may not be updated or deleted by non-admin users.
+
 
 ##Add an Image Tag
 
@@ -318,6 +331,12 @@ The 'size_min' and 'size_max' query parameters can be used to do greater-than an
 
 The results of this operation can be ordered using the 'sort_key' and 'sort_dir' parameters. The API uses the natural sorting of whatever image attribute is provided as the 'sort_key'. All image attributes can be used as the sort_key (except tags and link attributes). The sort_dir parameter indicates in which direction to sort. Acceptable values are 'asc' (ascending) and 'desc' (descending). Defaults values for sort_key and sort_dir are 'created_at' and 'desc'.
 
+**Property Protections**
+
+Version 2.2 of the Images API acknowledges the ability of a cloud provider to employ *property protections*.
+Thus, there may be image properties that will not appear in the list images response for non-admin users.
+
+
 ##Get an Image
 
 **GET /v2/images/\<IMAGE_ID\>**
@@ -340,6 +359,11 @@ Response body will be a single image entity. Using **GET /v2/image/da3b75d9-3f4a
         "file": "/v2/images/da3b75d9-3f4a-40e7-8a2c-bfab23927dea/file",
         "schema": "/v2/schemas/image"
     }
+
+**Property Protections**
+
+Version 2.2 of the Images API acknowledges the ability of a cloud provider to employ *property protections*.
+Thus, there may be some image properties that will not appear in the image detail response for non-admin users.
 
 
 ##Delete an Image
