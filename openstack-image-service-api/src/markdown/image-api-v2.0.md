@@ -191,11 +191,11 @@ Successful HTTP response will be 201 Created with a Location header containing t
 
 **PATCH /v2/images/\<IMAGE_ID\>**
 
-Request body must conform to the 'application/openstack-images-v2.0-json-patch' media type, documented in Appendix B. Using **PATCH /v2/images/e7db3b45-8db7-47ad-8109-3fb55c2c24fd** as an example:
+Request body must conform to the 'application/openstack-images-v2.1-json-patch' media type, documented in Appendix B. Using **PATCH /v2/images/e7db3b45-8db7-47ad-8109-3fb55c2c24fd** as an example:
 
     [
-        {"replace": "/name", "value": "Fedora 17"},
-        {"replace": "/tags", "value": ["fedora", "beefy"]}
+        {"op": "replace", "path": "/name", "value": "Fedora 17"},
+        {"op": "replace", "path": "/tags", "value": ["fedora", "beefy"]}
     ]
 
 Response body will represent the updated `image` entity. For example:
@@ -216,16 +216,16 @@ Response body will represent the updated `image` entity. For example:
 The PATCH method can also be used to add or remove image properties. To add a custom user-defined property such as "login-user" to an image, use the following example request.
 
     [
-        {"add": "/login-user", "value": "kvothe"}
+        {"op": "add", "path": "/login-user", "value": "kvothe"}
     ]
 
 Similarly, to remove a property such as "login-user" from an image, use the following example request.
 
     [
-        {"remove": "/login-user"}
+        {"op": "remove", "path": "/login-user"}
     ]
 
-See Appendix B for more details about the 'application/openstack-images-v2.0-json-patch' media type.
+See Appendix B for more details about the 'application/openstack-images-v2.1-json-patch' media type.
 
 **Property Protections**
 
@@ -747,8 +747,8 @@ Date: Tue, 14 Aug 2012 00:46:48 GMT
 
 ```
 % curl -i -X PATCH -H "X-Auth-Token: $OS_AUTH_TOKEN" \
-       -H "Content-Type: application/openstack-images-v2.0-json-patch"
-       -d '[{"add": "/login-user", "value": "root"}]' \
+       -H "Content-Type: application/openstack-images-v2.1-json-patch"
+       -d '[{"op": "add", "path": "/login-user", "value": "root"}]' \
        $OS_IMAGE_URL/v2/images/7b97f37c-899d-44e8-aaa0-543edbc4eaad
 ```
 
@@ -756,7 +756,7 @@ Date: Tue, 14 Aug 2012 00:46:48 GMT
 HTTP/1.1 200 OK
 Content-Length: 477
 Content-Type: application/json; charset=UTF-8
-Date: Tue, 14 Aug 2012 00:46:50 GMT
+Date: Fri, 15 Nov 2013 00:46:50 GMT
 
 {
     "id": "7b97f37c-899d-44e8-aaa0-543edbc4eaad",
@@ -766,8 +766,8 @@ Date: Tue, 14 Aug 2012 00:46:50 GMT
     "protected": false,
     "tags": ["ubuntu", "12.10", "quantal"],
     "login_user": "root",
-    "created_at": "2012-08-14T00:46:48Z",
-    "updated_at": "2012-08-14T00:46:50Z",
+    "created_at": "2013-11-15T00:46:48Z",
+    "updated_at": "2013-11-15T00:46:50Z",
     "file": "/v2/images/7b97f37c-899d-44e8-aaa0-543edbc4eaad/file",
     "self": "/v2/images/7b97f37c-899d-44e8-aaa0-543edbc4eaad",
     "schema": "/v2/schemas/image"
@@ -821,17 +821,23 @@ Content-Length: 0
 Date: Tue, 14 Aug 2012 00:47:12 GMT
 ```
 
+
 #Appendix B: HTTP PATCH media types
 
 ##Overview
 
-The HTTP PATCH request must provide a media type for the server to determine how the patch should be applied to an image resource. An unsupported media type will result in an HTTP error response with the 415 status code. For image resources, the only supported media type for patch requests is 'application/openstack-images-v2.0-json-patch'.
+The HTTP PATCH request must provide a media type for the server to determine how the patch should be applied to an image resource. An unsupported media type will result in an HTTP error response with the 415 status code. For image resources, two media types are supported:
 
-The 'application/openstack-images-v2.0-json-patch' media type is intended to provide a useful and compatible subset of the functionality defined in the standard ['application/json-patch' media type](http://tools.ietf.org/html/draft-ietf-appsawg-json-patch).
+* `application/openstack-images-v2.1-json-patch`
+* `application/openstack-images-v2.0-json-patch`
+
+The `application/openstack-images-v2.1-json-patch` media type is intended to provide a useful and compatible subset of the functionality defined in JavaScript Object Notation (JSON) Patch [RFC6902](http://tools.ietf.org/html/rfc6902), which defines the `application/json-patch+json` media type.
+
+The `application/openstack-images-v2.0-json-patch` media type is based on [draft 4](http://tools.ietf.org/html/draft-ietf-appsawg-json-patch-04) of the standard.  Its use is deprecated.
 
 ##Restricted JSON Pointers
 
-The 'application/openstack-images-v2.0-json-patch' media type defined in this appendix adopts a restricted form of [JSON-Pointers](http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer). A restricted JSON pointer is a [Unicode](http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03#ref-Unicode) string containing a sequence of exactly one reference token, prefixed by a '/' (%x2F) character.
+The 'application/openstack-images-v2.1-json-patch' media type defined in this appendix adopts a restricted form of [JSON-Pointers](http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer). A restricted JSON pointer is a [Unicode](http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03#ref-Unicode) string containing a sequence of exactly one reference token, prefixed by a '/' (%x2F) character.
 
 If a reference token contains '~' (%x7E) or '/' (%x2F) characters, they must be encoded as '~0' and '~1' respectively.
 
@@ -871,9 +877,18 @@ the following restricted JSON pointers evaluate to the accompanying values:
 
 ##Operations
 
-The 'application/openstack-images-v2.0-json-patch' media type supports a subset of the operations defined in the 'application/json-patch' media type. The operation to perform is expressed in a member of the operation object. The name of the operation member is one of: "add", "remove", "replace".
+The 'application/openstack-images-v2.1-json-patch' media type supports a subset of the operations defined in the 'application/json-patch+json' media type. The operation to perform is expressed as the value of the "op" member of the operation object.
 
-The member value is a string containing a restricted JSON pointer value that references the location within the target image to perform the operation. It is an error condition if an operation object contains no recognized operation member or more than one operation.
+* The operations supported are: "add", "remove", "replace".
+* It is an error condition if an operation object contains no recognized operation member.
+
+The location within the target image where the requested operation is to be performed is specified by using the "path" member of the operation object.
+
+* The member value is a string containing a restricted JSON pointer value that references the location where the operation is to be performed within the target image.
+
+Where appropriate (that is, for the "add" and "replace" operations), the operation object must contain a third data member, "value".
+
+* The member value is the actual value to add (or to use in the replace operation) expressed in JSON notation.  (For example, strings must be quoted, numeric values are unquoted.)
 
 The payload for a PATCH request must be a *list* of json objects, each of which adheres to one of the formats described below.
 
@@ -883,7 +898,7 @@ The "add" operation adds a new value at a specified location in the target image
 
 Example:
 
-    { "add": "/login-name", "value": "kvothe"}
+    { "op": "add", "path": "/login-name", "value": "kvothe"}
 
 * remove
 
@@ -891,7 +906,7 @@ The "remove" operation removes the specified image property in the target image.
 
 Example:
 
-    { "remove": "/login-name" }
+    { "op": "remove", "path": "/login-name" }
 
 * replace
 
@@ -899,7 +914,7 @@ The "replace" operation replaces the value of the specified image property in th
 
 Example:
 
-    { "replace": "/login-name", "value": "kote" }
+    { "op": "replace", "path": "/login-name", "value": "kote" }
 
 This operation is functionally identical to expressing a "remove" operation for an image property, followed immediately by an "add" operation at the same location with the replacement value.
 
