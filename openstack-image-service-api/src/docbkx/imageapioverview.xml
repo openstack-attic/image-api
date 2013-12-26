@@ -7,17 +7,17 @@
 <?dbhtml stop-chunking?>
     <para>OpenStack Image Service offers retrieval, storage, and
         metadata assignment for your images that you want to run in
-        your OpenStack cloud. The project is code-named Glance. </para>
+        your OpenStack cloud. The project is code-named Glance.</para>
     <para>OpenStack Image service enables users to store and retrieve
         images through a simple Web Service (ReST: Representational
-        State Transfer) interface. </para>
+        State Transfer) interface.</para>
     <para>For more details on the OpenStack Image service,
         please refer to <link xlink:href="http://docs.openstack.org/developer/glance/"
             >docs.openstack.org/developer/glance/</link>
     </para>
     <para>We welcome feedback, comments, and bug reports at <link
             xlink:href="http://bugs.launchpad.net/glance"
-            >bugs.launchpad.net/glance</link>. </para>
+            >bugs.launchpad.net/glance</link>.</para>
     <section xml:id="glance-api-intended-audience">
         <title>Intended Audience</title>
         <para>This guide is intended to assist software developers who
@@ -29,7 +29,7 @@
             here, you should first have a general understanding of the
             OpenStack Image Service and have access to an installation
             of OpenStack Image Service. You should also be familiar
-            with: </para>
+            with:</para>
         <itemizedlist spacing="compact">
             <listitem>
                 <para>ReSTful web services</para>

@@ -38,7 +38,7 @@
             <para>This document is for software developers who develop
                 applications by using the OpenStack™ Image Service
                 Application Programming Interface
-                    (<abbrev>API</abbrev>) v1. </para>
+                    (<abbrev>API</abbrev>) v1.</para>
         </abstract>
         <revhistory>
             <revision>
