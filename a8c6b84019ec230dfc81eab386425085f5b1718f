@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Approved+1: Diane Fleming <diane.fleming@rackspace.com>
+Code-Review+2: Diane Fleming <diane.fleming@rackspace.com>
+Submitted-by: Jenkins
+Submitted-at: Mon, 30 Dec 2013 14:35:02 +0000
+Reviewed-on: https://review.openstack.org/64168
+Project: openstack/image-api
+Branch: refs/heads/master
