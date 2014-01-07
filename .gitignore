@@ -11,3 +11,6 @@ image-api-v2.0.xml
 *~
 .*.swp
 .bak
+
+# Testenvironment
+.tox
