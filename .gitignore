@@ -5,3 +5,12 @@
 # Built documentation #
 #######################
 target/
+image-api-v2.0.xml
+
+# Testenvironment
+.tox
+
+# Editors
+*~
+.*.swp
+.bak
