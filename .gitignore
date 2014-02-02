@@ -5,6 +5,7 @@
 # Built documentation #
 #######################
 target/
+publish-docs/
 image-api-v2.0.xml
 
 # Editors
