@@ -16,7 +16,7 @@ Prerequisites
 `Apache Maven <http://maven.apache.org/>`_ must be installed to build the
 documentation.
 
-To install Maven 3 for Ubuntu 12.04 and later,and Debian wheezy and later::
+To install Maven 3 for Ubuntu 12.04 and later, and Debian wheezy and later::
 
     apt-get install maven
 
@@ -68,7 +68,7 @@ Contributing
 
 Our community welcomes all people interested in open source cloud
 computing, and there are no formal membership requirements. The best
-way to join the community is to talk with others online or at a meetup
+way to join the community is to talk with others online or at a meet up
 and offer contributions through the code review process, the OpenStack
 wiki, or blogs. We welcome all types of contributions, from blueprint
 designs to documentation to testing to deployment scripts.
