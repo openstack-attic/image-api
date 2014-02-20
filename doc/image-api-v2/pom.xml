@@ -34,7 +34,7 @@
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <includes> image-api-v2.0.xml </includes>
+                            <includes> bk-image-api-v2.0.xml </includes>
                             <generateToc>
                                 appendix  toc,title
                                 article/appendix  nop
