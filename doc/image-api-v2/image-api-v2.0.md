@@ -620,6 +620,25 @@ The image is not visible in the member's image-list, but the member can still bo
 
 These calls are applicable to users acting either as producers or consumers of shared images.
 
+####Show Image Member
+
+**GET /v2/images/\<IMAGE_ID\>/members/\<MEMBER_ID\>**
+
+The response will conform to the JSON schema available at **/v2/schemas/member**, for example,
+
+    {
+        "created_at": "2014-02-20T04:15:17Z",
+        "image_id": "634985e5-0f2e-488e-bd7c-928d9a8ea82a",
+        "member_id": "46a12bfd09c8459483c03e1b0d71bda8",
+        "schema": "/v2/schemas/member",
+        "status": "pending",
+        "updated_at": "2014-02-20T04:15:17Z"
+    }
+
+The image owner (the producer) may make this call successfully for each image member.  An image
+member (a consumer) may make this call successfully only when MEMBER_ID is that consumer's tenant ID.
+For any other MEMBER_ID, the consumer will receive a 404 response.
+
 ####List Image Members
 
 **GET /v2/images/\<IMAGE_ID\>/members**
