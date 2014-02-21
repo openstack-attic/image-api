@@ -1,4 +1,4 @@
-#OpenStack Image Service API v2 Reference
+% OpenStack Image Service API v2 Reference
 
 The Image Service API v2 provides methods for storing and retrieving disk and server images.
 
