@@ -32,16 +32,16 @@ The API is in the ``openstack-image-service-api`` directory.
 To build a specific guide, look for a ``pom.xml`` file within a subdirectory,
 then run the ``mvn`` command in that directory. For example::
 
-    cd openstack-image-service-api
+    cd doc/image-api-v1
     mvn clean generate-sources
 
 The generated PDF documentation file is::
 
-    openstack-image-service-api/target/docbkx/webhelp/api/openstack-image-service/1.1/os-image-service-devguide-1.1.pdf
+    doc/image-api-v1/target/docbkx/webhelp/api/openstack-image-service/1.1/os-image-service-devguide-1.1.pdf
 
 The root of the generated HTML documentation is::
 
-    openstack-image-service-api//target/docbkx/webhelp/api/openstack-image-service/1.1/content/index.html
+    doc/image-api-v1/target/docbkx/webhelp/api/openstack-image-service/1.1/content/index.html
 
 
 Testing of changes and building of the manual
