@@ -429,7 +429,7 @@ Recall that the schemas contained in this document are only examples and should 
 
 Request body ignored.
 
-Response body will contain a json-schema document representing an image `member` entity.
+Response body contains a json-schema document representing an image `member` entity.
 
 The response from the API should be considered authoritative.
 The schema is reproduced here solely for your convenience:
@@ -475,7 +475,7 @@ The schema is reproduced here solely for your convenience:
 
 Request body ignored.
 
-Response body will contain a json-schema document representing an image `members` entity (a container of `member` entities).
+Response body contains a json-schema document representing an image `members` entity (a container of `member` entities).
 
 The response from the API should be considered authoritative.
 The schema is reproduced here solely for your convenience:
@@ -552,7 +552,7 @@ The member status of a newly created image member is `pending`.
 
 If the user making the call is not the image owner, the response is HTTP status code 404.
 
-The response will conform to the JSON schema available at **/v2/schemas/member**, for example,
+The response conforms to the JSON schema available at **/v2/schemas/member**, for example,
 
     {
         "created_at": "2013-09-19T20:36:53Z",
@@ -569,9 +569,9 @@ The response will conform to the JSON schema available at **/v2/schemas/member**
 
 A successful response is 204 (No Content).
 
-The call will return HTTP status code 404 if MEMBER_ID is not an image member of the specified image.
+The call returns HTTP status code 404 if MEMBER_ID is not an image member of the specified image.
 
-The call will return HTTP status code 404 if the user making the call is not the image owner.
+The call returns HTTP status code 404 if the user making the call is not the image owner.
 
 ###Image Consumer Calls
 
@@ -589,7 +589,7 @@ The body of the request is a JSON object specifying the member status to which t
 
 where STATUS_VALUE is one of { `pending`, `accepted`, or `rejected` }.
 
-The response will conform to the JSON schema available at **/v2/schemas/member**, for example,
+The response conforms to the JSON schema available at **/v2/schemas/member**, for example,
 
     {
         "created_at": "2013-09-20T19:22:19Z",
@@ -603,7 +603,7 @@ The response will conform to the JSON schema available at **/v2/schemas/member**
 
 If the call is made by the image owner, the response is HTTP status code 403 (Forbidden).
 
-If the call is made by a user who is not the image owner and whose tenant ID is not the same as the MEMBER_ID, the response is HTTP status code 404.
+If the call is made by a user who is not the image owner and whose tenant ID does not match the MEMBER_ID, the response is HTTP status code 404.
 
 ####Image Member Status Values
 
@@ -620,11 +620,30 @@ The image is not visible in the member's image-list, but the member can still bo
 
 These calls are applicable to users acting either as producers or consumers of shared images.
 
+####Show Image Member
+
+**GET /v2/images/\<IMAGE_ID\>/members/\<MEMBER_ID\>**
+
+The response conforms to the JSON schema available at **/v2/schemas/member**, for example,
+
+    {
+        "created_at": "2014-02-20T04:15:17Z",
+        "image_id": "634985e5-0f2e-488e-bd7c-928d9a8ea82a",
+        "member_id": "46a12bfd09c8459483c03e1b0d71bda8",
+        "schema": "/v2/schemas/member",
+        "status": "pending",
+        "updated_at": "2014-02-20T04:15:17Z"
+    }
+
+The image owner (the producer) may make this call successfully for each image member.  An image
+member (a consumer) may make this call successfully only when MEMBER_ID matches that consumer's tenant ID.
+For any other MEMBER_ID, the consumer receives a 404 response.
+
 ####List Image Members
 
 **GET /v2/images/\<IMAGE_ID\>/members**
 
-The response will conform to the JSON schema available at **/v2/schemas/members**, for example,
+The response conforms to the JSON schema available at **/v2/schemas/members**, for example,
 
     {
         "members": [
@@ -649,7 +668,7 @@ The response will conform to the JSON schema available at **/v2/schemas/members*
     }
 
 If the call is made by a user with whom the image has been shared, the member-list will contain *only* the information for that user.
-For example, if the call is made by tenant 8989447062e04a818baf9e073fd04fa7, the response will be:
+For example, if the call is made by tenant 8989447062e04a818baf9e073fd04fa7, the response is:
 
     {
         "members": [
@@ -665,7 +684,7 @@ For example, if the call is made by tenant 8989447062e04a818baf9e073fd04fa7, the
         "schema": "/v2/schemas/members"
     }
 
-If the call is made by a user with whom the image is *not* shared, the response will be a 404.
+If the call is made by a user with whom the image is *not* shared, the response is a 404.
 
 ####List Shared Images
 
