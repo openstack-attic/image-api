@@ -1,0 +1,9 @@
+Change-Id: Ib1e8fecb045b4c7dcac58be9d65a41f9584ac259
+Verified+2: Jenkins
+Approved+1: Andreas Jaeger <jaegerandi@gmail.com>
+Code-Review+2: Andreas Jaeger <jaegerandi@gmail.com>
+Submitted-by: Jenkins
+Submitted-at: Fri, 07 Mar 2014 08:09:01 +0000
+Reviewed-on: https://review.openstack.org/76615
+Project: openstack/image-api
+Branch: refs/heads/master
