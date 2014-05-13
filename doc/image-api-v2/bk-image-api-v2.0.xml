@@ -5,9 +5,9 @@
     xmlns:svg="http://www.w3.org/2000/svg"
     xmlns:html="http://www.w3.org/1999/xhtml" version="5.0"
     xml:id="os-image-service-devguide">
-    <title>OpenStack Image Service API v2.0 Reference</title>
+    <title>OpenStack Image Service API v2 Reference</title>
     <?rax title.font.size="26px" subtitle.font.size="26px"?>
-    <titleabbrev>Image Service API 2.0 Reference</titleabbrev>
+    <titleabbrev>Image Service API v2 Reference</titleabbrev>
     <info>
         <author>
             <personname>
@@ -23,10 +23,11 @@
             <year>2011</year>
             <year>2012</year>
             <year>2013</year>
+            <year>2014</year>
             <holder>OpenStack Foundation</holder>
         </copyright>
         <releaseinfo>API v2</releaseinfo>
-        <productname>OpenStack Image Service API v2</productname>
+        <productname>OpenStack Image Service</productname>
         <pubdate/>
         <legalnotice role="apache2">
             <annotation>
