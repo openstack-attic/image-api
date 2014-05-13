@@ -13,7 +13,7 @@ The Image Service API v2 follows the lead of the v1 API and use a major version 
 
 **Backwards-compatibility**
 
-The interface will not be reduced with subsequent minor version releases, it will only be expanded. For example, everything in v2.1 will be available in v2.2.
+Subsequent minor version releases expand the interface. For example, everything in v2.1 is available in v2.2.
 
 
 **Property Protections**
@@ -50,7 +50,7 @@ Note that the HTTP status codes 401 and 403 are included in this specification a
 
 The v2 Images API primarily accepts and serves JSON-encoded data. In certain cases it also accepts and serves binary image data. Most requests that send JSON-encoded data must have the proper media type in their Content-Type header: 'application/json'. HTTP PATCH requests must use the patch media type defined for the entity they intend to modify. Requests that upload image data should use the media type 'application/octet-stream'.
 
-Each call only responds in one format, so clients should not worry about sending an Accept header. It will be ignored. Assume a response will be formatted as 'application/json' unless otherwise stated in this spec.
+Each call only responds in one format, so clients should not worry about sending an Accept header. It is ignored. The response is formatted as 'application/json' unless otherwise stated in this spec.
 
 ##Image Entities
 
@@ -58,13 +58,13 @@ An image entity is represented by a JSON-encoded data structure and its raw bina
 
 An image entity has an identifier (ID) that is guaranteed to be unique within the endpoint to which it belongs. The ID is used as a token in request URIs to interact with that specific image.
 
-An image is always guaranteed to have the following attributes: id, status, visibility, protected, tags, created_at, file and self. The other attributes defined in the `image` schema below are guaranteed to be defined, but will only be returned with an image entity if they have been explicitly set.
+An image is always guaranteed to have the following attributes: id, status, visibility, protected, tags, created_at, file and self. The other attributes defined in the `image` schema below are guaranteed to be defined, but is only returned with an image entity if they have been explicitly set.
 
-A client may set arbitrarily-named attributes on their images if the `image` json-schema allows it. These user-defined attributes will appear like any other image attributes. See [documentation](http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.4) of the additionalProperties json-schema attribute.
+A client may set arbitrarily-named attributes on their images if the `image` json-schema allows it. These user-defined attributes appear like any other image attributes. See [documentation](http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.4) of the additionalProperties json-schema attribute.
 
 ##JSON Schemas
 
-The necessary [json-schema](http://tools.ietf.org/html/draft-zyp-json-schema-03) documents will be provided at predictable URIs. A consumer should be able to validate server responses and client requests based on the published schemas. The schemas contained in this document are only examples and should not be used to validate your requests. A client should **always** fetch schemas from the server.
+The necessary [json-schema](http://tools.ietf.org/html/draft-zyp-json-schema-03) documents are provided at predictable URIs. A consumer should be able to validate server responses and client requests based on the published schemas. The schemas contained in this document are only examples and should not be used to validate your requests. A client should **always** fetch schemas from the server.
 
 #Metadata API
 
@@ -76,7 +76,7 @@ The following calls allow you to create, modify, and delete image metadata recor
 
 Request body ignored.
 
-Response body will contain a json-schema document representing an `images` entity (a container of `image` entities). For example:
+The response body contains a json-schema document that shows an `images` entity (a container of `image` entities). For example:
 
     {
         "name": "images",
@@ -84,7 +84,7 @@ Response body will contain a json-schema document representing an `images` entit
             "images": {
                 "items": {
                     "type": "array",
-                    "name": "image"
+                    "name": "image",
                     "properties": {
                         "id": {"type": "string"},
                         "name": {"type": "string"},
@@ -109,7 +109,7 @@ Response body will contain a json-schema document representing an `images` entit
                         {"href": "{file}", "rel": "enclosure"},
                         {"href": "{schema}", "rel": "describedby"}
                     ]
-                },
+                }
             },
             "schema": {"type": "string"},
             "next": {"type": "string"},
@@ -128,7 +128,7 @@ Response body will contain a json-schema document representing an `images` entit
 
 Request body ignored.
 
-Response body will contain a json-schema document representing an `image`. For example:
+The response body contains a json-schema document that shows an `image`. For example:
 
     {
         "name": "image",
@@ -171,7 +171,7 @@ Request body must be JSON-encoded and conform to the `image` JSON schema. For ex
         "tags": ["ubuntu", "quantal"]
     }
 
-Successful HTTP response will be 201 Created with a Location header containing the newly-created URI for the image. Response body will represent the created `image` entity. For example:
+Successful HTTP response is 201 Created with a Location header containing the newly-created URI for the image. The response body shows the created `image` entity. For example:
 
     {
         "id": "e7db3b45-8db7-47ad-8109-3fb55c2c24fd",
@@ -198,7 +198,7 @@ Request body must conform to the 'application/openstack-images-v2.1-json-patch' 
         {"op": "replace", "path": "/tags", "value": ["fedora", "beefy"]}
     ]
 
-Response body will represent the updated `image` entity. For example:
+The response body shows the updated `image` entity. For example:
 
     {
         "id": "e7db3b45-8db7-47ad-8109-3fb55c2c24fd",
@@ -239,11 +239,11 @@ Thus, there may be image properties that may not be updated or deleted by non-ad
 
 The the tag you want to add should be encoded into the request URI. For example, to tag image e7db3b45-8db7-47ad-8109-3fb55c2c24fd with 'miracle', you would **PUT /v2/images/e7db3b45-8db7-47ad-8109-3fb55c2c24fd/tags/miracle**. The request body is ignored.
 
-An image tag may be up to 255 characters in length. See the 'image' json-schema to determine which characters are allowed.
+An image tag can be up to 255 characters in length. See the 'image' json-schema to determine which characters are allowed.
 
 An image can only be tagged once with a specific string. Multiple attempts to tag an image with the same string will result in a single instance of that string being added to the image's tags list.
 
-An HTTP status of 204 will be returned.
+An HTTP status of 204 is returned.
 
 
 ##Delete an Image Tag
@@ -252,7 +252,7 @@ An HTTP status of 204 will be returned.
 
 The tag you want to delete should be encoded into the request URI. For example, to remove the tag 'miracle' from image e7db3b45-8db7-47ad-8109-3fb55c2c24fd, you would **DELETE /v2/images/e7db3b45-8db7-47ad-8109-3fb55c2c24fd/tags/miracle**. The request body is ignored.
 
-An HTTP status of 204 will be returned. Subsequent attempts to delete the tag will result in a 404.
+An HTTP status of 204 is returned. Subsequent attempts to delete the tag will result in a 404.
 
 
 ##List All Images
@@ -702,7 +702,7 @@ In this section we emphasize some useful filtering options.
 
 The following API calls are used to upload and download raw image data. For image metadata, see [Metadata API](#metadata-api).
 
-##Store Image File
+##Upload Image File
 
 **PUT /v2/images/\<IMAGE_ID\>/file**
 
@@ -712,7 +712,7 @@ Request Content-Type must be 'application/octet-stream'. Complete contents of re
 
 Response status will be 204.
 
-##Get Image File
+##Download Image File
 
 **GET /v2/images/\<IMAGE_ID\>/file**
 
@@ -722,7 +722,7 @@ Response body will be the raw binary data that represents the actual virtual dis
 
 The [Content-MD5](http://www.ietf.org/rfc/rfc1864.txt) header will contain an MD5 checksum of the image data. Clients are encouraged to verify the integrity of the image data they receive using this checksum.
 
-If no image data has been stored, an HTTP status of 204 will be returned.
+If no image data has been stored, an HTTP status of 204 is returned.
 
 #Appendix A: cURL Examples
 
