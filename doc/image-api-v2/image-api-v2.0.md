@@ -1,30 +1,32 @@
 #OpenStack Image Service API v2 Reference
 
-The Image Service API v2 provides methods for storing and retrieving disk and server images.
+The Image Service API v2 enables you to store and retrieve disk and server images.
 
-#General API Information
+#General API information
 
 ##Versioning
 
 **Two-part versioning scheme**
 
-The Image Service API v2 follows the lead of the v1 API and use a major version and a minor version. For example, 'v2.3' would break down to major version 2 and minor version 3.
+The Image Service API v2 mimics API v1 and uses a major version and a minor version. For example, v2.3 is major version 2 and minor version 3.
 
 
 **Backwards-compatibility**
 
-The interface will not be reduced with subsequent minor version releases, it will only be expanded. For example, everything in v2.1 will be available in v2.2.
+Minor version releases expand and do not reduce the interface. For example, everything in v2.1 is available in v2.2.
 
 
-**Property Protections**
+**Property protections**
 
-Version 2.2 of the Images API acknowledges the ability of a cloud provider to employ *property protections*, an optional feature whereby CRUD protections may be applied to image properties.
-Thus, in particular deployments, non-admin users may not be able to view, update, or delete some image properties.
-Additionally, non-admin users may be forced to follow a particular naming convention when creating custom image properties.
+The Images API v2.2 enables a cloud provider to employ *property protections*, an optional feature whereby CRUD protections are applied to image properties.
+
+Thus, in particular deployments, non-admin users might not be able to view, update, or delete some image properties.
+
+Additionally, non-admin users might be forced to follow a particular naming convention when creating custom image properties.
+
 It is left to the cloud provider to communicate policies concerning property protections to users.
 
-
-##HTTP Response Status Codes
+##HTTP response status codes
 
 The following HTTP status codes are all valid responses:
 
@@ -40,19 +42,19 @@ The following HTTP status codes are all valid responses:
 
 Responses that don't have a 200-level response code are not guaranteed to have a body. If a response does happen to return a body, it is not part of this spec and cannot be depended upon.
 
-##Authentication and Authorization
+##Authentication and authorization
 
 This spec does not govern how one might authenticate or authorize clients of the v2 Images API. Implementors are free to decide how to identify clients and what authorization rules to apply.
 
-Note that the HTTP status codes 401 and 403 are included in this specification as valid response codes.
+Note that the HTTP 401 and 403 status codes are included in this specification as valid response codes.
 
-##Request/Response Content Format
+##Request and response content format
 
-The v2 Images API primarily accepts and serves JSON-encoded data. In certain cases it also accepts and serves binary image data. Most requests that send JSON-encoded data must have the proper media type in their Content-Type header: 'application/json'. HTTP PATCH requests must use the patch media type defined for the entity they intend to modify. Requests that upload image data should use the media type 'application/octet-stream'.
+The Images Service API v2 primarily accepts and serves JSON-encoded data. In certain cases it also accepts and serves binary image data. Most requests that send JSON-encoded data must have the proper media type in their Content-Type header: 'application/json'. HTTP PATCH requests must use the patch media type defined for the entity they intend to modify. Requests that upload image data should use the media type 'application/octet-stream'.
 
 Each call only responds in one format, so clients should not worry about sending an Accept header. It will be ignored. Assume a response will be formatted as 'application/json' unless otherwise stated in this spec.
 
-##Image Entities
+##Image entities
 
 An image entity is represented by a JSON-encoded data structure and its raw binary data.
 
@@ -62,7 +64,7 @@ An image is always guaranteed to have the following attributes: id, status, visi
 
 A client may set arbitrarily-named attributes on their images if the `image` json-schema allows it. These user-defined attributes will appear like any other image attributes. See [documentation](http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.4) of the additionalProperties json-schema attribute.
 
-##JSON Schemas
+##JSON schemas
 
 The necessary [json-schema](http://tools.ietf.org/html/draft-zyp-json-schema-03) documents will be provided at predictable URIs. A consumer should be able to validate server responses and client requests based on the published schemas. The schemas contained in this document are only examples and should not be used to validate your requests. A client should **always** fetch schemas from the server.
 
@@ -70,7 +72,7 @@ The necessary [json-schema](http://tools.ietf.org/html/draft-zyp-json-schema-03)
 
 The following calls allow you to create, modify, and delete image metadata records. For binary image data, see [Binary Data API](#binary-data-api).
 
-##Get Images Schema
+##Get images schema
 
 **GET /v2/schemas/images**
 
@@ -84,7 +86,7 @@ Response body will contain a json-schema document representing an `images` entit
             "images": {
                 "items": {
                     "type": "array",
-                    "name": "image"
+                    "name": "image",
                     "properties": {
                         "id": {"type": "string"},
                         "name": {"type": "string"},
@@ -109,7 +111,7 @@ Response body will contain a json-schema document representing an `images` entit
                         {"href": "{file}", "rel": "enclosure"},
                         {"href": "{schema}", "rel": "describedby"}
                     ]
-                },
+                }
             },
             "schema": {"type": "string"},
             "next": {"type": "string"},
@@ -122,7 +124,7 @@ Response body will contain a json-schema document representing an `images` entit
         ]
     }
 
-##Get Image Schema
+##Get image schema
 
 **GET /v2/schemas/image**
 
@@ -159,7 +161,7 @@ Response body will contain a json-schema document representing an `image`. For e
     }
 
 
-##Create an Image
+##Create image
 
 **POST /v2/images**
 
@@ -187,9 +189,9 @@ Successful HTTP response will be 201 Created with a Location header containing t
     }
 
 
-##Update an Image
+##Update an image
 
-**PATCH /v2/images/\<IMAGE_ID\>**
+**PATCH /v2/images/{image_id}**
 
 Request body must conform to the 'application/openstack-images-v2.1-json-patch' media type, documented in Appendix B. Using **PATCH /v2/images/e7db3b45-8db7-47ad-8109-3fb55c2c24fd** as an example:
 
@@ -227,15 +229,14 @@ Similarly, to remove a property such as "login-user" from an image, use the foll
 
 See Appendix B for more details about the 'application/openstack-images-v2.1-json-patch' media type.
 
-**Property Protections**
+**Property protections**
 
 Version 2.2 of the Images API acknowledges the ability of a cloud provider to employ *property protections*.
 Thus, there may be image properties that may not be updated or deleted by non-admin users.
 
+##Add an image tag
 
-##Add an Image Tag
-
-**PUT /v2/images/\<IMAGE_ID\>/tags/\<TAG\>**
+**PUT /v2/images/{image_id}/tags/\{tag}**
 
 The the tag you want to add should be encoded into the request URI. For example, to tag image e7db3b45-8db7-47ad-8109-3fb55c2c24fd with 'miracle', you would **PUT /v2/images/e7db3b45-8db7-47ad-8109-3fb55c2c24fd/tags/miracle**. The request body is ignored.
 
@@ -243,19 +244,18 @@ An image tag may be up to 255 characters in length. See the 'image' json-schema 
 
 An image can only be tagged once with a specific string. Multiple attempts to tag an image with the same string will result in a single instance of that string being added to the image's tags list.
 
-An HTTP status of 204 will be returned.
+An HTTP status of 204 is returned.
 
+##Delete an image tag
 
-##Delete an Image Tag
-
-**DELETE /v2/images/\<IMAGE_ID\>/tags/\<TAG\>**
+**DELETE /v2/images/{image_id}/tags/{tag}**
 
 The tag you want to delete should be encoded into the request URI. For example, to remove the tag 'miracle' from image e7db3b45-8db7-47ad-8109-3fb55c2c24fd, you would **DELETE /v2/images/e7db3b45-8db7-47ad-8109-3fb55c2c24fd/tags/miracle**. The request body is ignored.
 
 An HTTP status of 204 will be returned. Subsequent attempts to delete the tag will result in a 404.
 
 
-##List All Images
+##List images
 
 **GET /v2/images**
 
@@ -854,7 +854,7 @@ The `application/openstack-images-v2.1-json-patch` media type is intended to pro
 
 The `application/openstack-images-v2.0-json-patch` media type is based on [draft 4](http://tools.ietf.org/html/draft-ietf-appsawg-json-patch-04) of the standard.  Its use is deprecated.
 
-##Restricted JSON Pointers
+##Restricted JSON pointers
 
 The 'application/openstack-images-v2.1-json-patch' media type defined in this appendix adopts a restricted form of [JSON-Pointers](http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer). A restricted JSON pointer is a [Unicode](http://tools.ietf.org/html/draft-ietf-appsawg-json-pointer-03#ref-Unicode) string containing a sequence of exactly one reference token, prefixed by a '/' (%x2F) character.
 
@@ -869,7 +869,7 @@ Its ABNF syntax is:
 
 Restricted JSON Pointers are evaluated as ordinary JSON pointers per [JSON-Pointer](http://tools.ietf.org/html/draft-pbryan-zyp-json-pointer).
 
-For example, given the `image` entity
+For example, given the `image` entity:
 
     {
         "id": "da3b75d9-3f4a-40e7-8a2c-bfab23927dea",
@@ -887,7 +887,7 @@ For example, given the `image` entity
         "schema": "/v2/schemas/image"
     }
 
-the following restricted JSON pointers evaluate to the accompanying values:
+The following restricted JSON pointers evaluate to the accompanying values:
 
     "/name"        "cirros-0.3.0-x86_64-uec-ramdisk"
     "/size"        2254249
@@ -896,45 +896,114 @@ the following restricted JSON pointers evaluate to the accompanying values:
 
 ##Operations
 
-The 'application/openstack-images-v2.1-json-patch' media type supports a subset of the operations defined in the 'application/json-patch+json' media type. The operation to perform is expressed as the value of the "op" member of the operation object.
+The application/openstack-images-v2.1-json-patch media type supports a subset of the operations defined in the application/json-patch+json media type. Specify the operation in the "op" member of the request object.
 
-* The operations supported are: "add", "remove", "replace".
-* It is an error condition if an operation object contains no recognized operation member.
+* The supported operations are add, remove, and replace.
+* If an operation object contains no recognized operation member, an error occurs.
 
-The location within the target image where the requested operation is to be performed is specified by using the "path" member of the operation object.
+Specify the location where the requested operation is to be performed in the target image in the "path" member of the operation object.
 
-* The member value is a string containing a restricted JSON pointer value that references the location where the operation is to be performed within the target image.
+* The member value is a string containing a restricted JSON-pointer value that references the location where the operation is to be performed within the target image.
 
-Where appropriate (that is, for the "add" and "replace" operations), the operation object must contain a third data member, "value".
+Where appropriate (that is, for the "add" and "replace" operations), the operation object must contain the "value" data member.
 
 * The member value is the actual value to add (or to use in the replace operation) expressed in JSON notation.  (For example, strings must be quoted, numeric values are unquoted.)
 
-The payload for a PATCH request must be a *list* of json objects, each of which adheres to one of the formats described below.
+The payload for a PATCH request must be a *list* of JSON objects. Each object must adhere to one of the following formats.
 
 * add
 
-The "add" operation adds a new value at a specified location in the target image. The location must reference an image property to add to an existing image. The operation object contains a "value" member that specifies the value to be added.
+The add operation adds a new value at a specified location in the target image. The location must reference an image property to add to an existing image. 
+
+The operation object specifies a "value" member and associated value. 
 
 Example:
 
-    { "op": "add", "path": "/login-name", "value": "kvothe"}
+    PATCH /images/{image_id}
+    
+    [
+       {
+          "op":"add",
+          "path":"/login-name",
+          "value":"kvothe"
+       }
+    ]
+    
+You can also use the add operation to add a location to the set of locations that are associated with a specified image ID, as follows:
+
+Example:
+
+    PATCH /images/{image_id}
+    
+    [
+       {
+          "op":"add",
+          "path":"/locations/1",
+          "value":"scheme4://path4"
+       }
+    ]
 
 * remove
 
-The "remove" operation removes the specified image property in the target image. It is an error condition if no image property exists at the specified location.
+The remove operation removes the specified image property in the target image. If an image property does not exist at the specified location, an error occurs. 
 
 Example:
 
-    { "op": "remove", "path": "/login-name" }
+    PATCH /images/{image_id}
+    
+    [
+       {
+          "op":"remove",
+          "path":"/login-name"
+       }
+    ]
+
+You can also use the remove operation to remove a location from a set of locations that are associated with a specified image ID, as follows:
+
+Example: 
+
+    PATCH /images/{image_id}
+    
+    [
+       {
+         "op":"remove",
+         "path":"/locations/2"
+       }
+    ]
 
 * replace
 
-The "replace" operation replaces the value of the specified image property in the target image with a new value. The operation object contains a "value" member that specifies the replacement value.
+The replace operation replaces the value of a specified image property in the target image with a new value. The operation object contains a "value" member that specifies the replacement value.
 
 Example:
 
-    { "op": "replace", "path": "/login-name", "value": "kote" }
+    [
+       {
+          "op":"replace",
+          "path":"/login-name",
+          "value":"kote"
+       }
+    ]
 
 This operation is functionally identical to expressing a "remove" operation for an image property, followed immediately by an "add" operation at the same location with the replacement value.
 
-It is an error condition if the specified image property does not exist for the target image.
+If the specified image property does not exist for the target image, an error occurs.
+
+You can also use the replace operation to replace a location in the set of locations that are associated with a specified image ID, as follows:
+
+Example:
+
+    PATCH /images/{image_id}
+    
+    [
+       {
+          "op":"replace",
+          "path":"/locations",
+          "value":[
+             "scheme5://path5",
+            "scheme6://path6"
+          ]
+      }
+    ]
+
+
