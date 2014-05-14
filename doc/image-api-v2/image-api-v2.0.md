@@ -887,7 +887,7 @@ For example, given the `image` entity
         "schema": "/v2/schemas/image"
     }
 
-the following restricted JSON pointers evaluate to the accompanying values:
+The following restricted JSON pointers evaluate to the accompanying values:
 
     "/name"        "cirros-0.3.0-x86_64-uec-ramdisk"
     "/size"        2254249
