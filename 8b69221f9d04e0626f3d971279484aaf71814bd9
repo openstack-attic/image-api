@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Code-Review+1: Christian Berendt <berendt@b1-systems.de>
+Code-Review+2: Andreas Jaeger <jaegerandi@gmail.com>
+Workflow+1: Andreas Jaeger <jaegerandi@gmail.com>
+Submitted-by: Jenkins
+Submitted-at: Sat, 12 Jul 2014 19:44:41 +0000
+Reviewed-on: https://review.openstack.org/104311
+Project: openstack/image-api
+Branch: refs/heads/master
