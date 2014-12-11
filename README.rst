@@ -1,7 +1,13 @@
 Image Service API
 +++++++++++++++++
 
-This repository contains the RESTful API information for the OpenStack
+This repository is now frozen-in-time and will not accept new patches.
+To update Image API information, please submit patches to
+http://git.openstack.org/cgit/openstack/glance-specs for a new API feature
+and to http://git.openstack.org/cgit/openstack/api-site for implemented API
+information.
+
+It was the original holder for API information for the OpenStack
 Image Service, also known as Glance. The Glance project provides
 services for discovering, registering, and retrieving virtual machine
 images. The Image Service provides a RESTful API that allows querying of VM
